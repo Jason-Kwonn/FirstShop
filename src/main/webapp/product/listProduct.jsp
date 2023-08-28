@@ -28,7 +28,7 @@
 	
 	<div style="width:98%; margin-left:10px;">
 	
-	<form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="post">
+	<form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="get">
 	
 	<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 		<tr>
@@ -65,7 +65,7 @@
 					<option value="2" ${!empty search.searchCondition && search.searchCondition == 2 ? "selected" : "" }>상품가격</option>
 			</select>
 			<input type="text" name="searchKeyword" 
-							 value="${!empty search.searchKeyword ? search.searchKeyword : ""}"
+							 value="${!empty search.searchKeyword ? search.searchKeyword : ''}"
 							 class="ct_input_g" style="width:200px; height:20px" />
 			</td>
 			<td align="right" width="70">
@@ -104,7 +104,7 @@
 			<td colspan="11" bgcolor="808285" height="1"></td>
 		</tr>
 	<c:set var="i" value="0" />
-	<c:forEach var="product" items="${productList}">
+	<c:forEach var="product" items="${list}">
 		<c:set var="i" value="${ i+1 }" />
 		<tr class="ct_list_pop">
 			<td align="center">${ i }</td>
