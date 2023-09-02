@@ -16,15 +16,15 @@
 <script type="text/javascript">
 
 function fncAddPurchase() {
-	document.addPurchase.submit();
+	document.purchase.submit();
 }
 
 </script>
 </head>
 
 <body>
-
-<form name="addPurchase" method="post" action="/addPurchase.do?prodNo=${purchase.purchaseProd.prodNo}">
+<!-- prodNo=${purchase.purchaseProd.prodNo} -->
+<form name="purchase" method="post" action="/addPurchase.do">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -72,7 +72,7 @@ function fncAddPurchase() {
 			상품명 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.purchaseProd.prodName}%></td>
+		<td class="ct_write01">${purchase.purchaseProd.prodName}</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -153,7 +153,7 @@ function fncAddPurchase() {
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverPhone" class="ct_input_g" 
-							style="width: 100px; height: 19px" maxLength="20" value="${purchase.buyer.userPhone}" />
+							style="width: 100px; height: 19px" maxLength="20" value="${purchase.buyer.phone}" />
 		</td>
 	</tr>
 	<tr>
@@ -163,7 +163,7 @@ function fncAddPurchase() {
 		<td width="104" class="ct_write">구매자주소</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="text" name="receiverAddr" class="ct_input_g" 
+			<input 	type="text" name="dlvyAddr" class="ct_input_g" 
 							style="width: 100px; height: 19px" maxLength="20" 	value="${purchase.buyer.addr}" />
 		</td>
 	</tr>
@@ -174,7 +174,7 @@ function fncAddPurchase() {
 		<td width="104" class="ct_write">구매요청사항</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input		type="text" name="receiverRequest" 	class="ct_input_g" 
+			<input		type="text" name="dlvyRequest" 	class="ct_input_g" 
 							style="width: 100px; height: 19px" maxLength="20" />
 		</td>
 	</tr>
@@ -185,10 +185,10 @@ function fncAddPurchase() {
 		<td width="104" class="ct_write">배송희망일자</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td width="200" class="ct_write01">
-			<input 	type="text" readonly="readonly" name="receiverDate" class="ct_input_g" 
+			<input 	type="text" readonly="readonly" name="dlvyDate" class="ct_input_g" 
 							style="width: 100px; height: 19px" maxLength="20"/>
 			<img 	src="../images/ct_icon_date.gif" width="15" height="15"	
-						onclick="show_calendar('document.addPurchase.receiverDate', document.addPurchase.receiverDate.value)"/>
+						onclick="show_calendar('document.purchase.dlvyDate', document.purchase.dlvyDate.value)"/>
 		</td>
 	</tr>
 	<tr>

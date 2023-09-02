@@ -20,7 +20,7 @@
 	
 	<body bgcolor="#ffffff" text="#000000">
 	
-	<form name="detailForm" method="post">
+	<form name="detailForm" method="post" >
 	
 	<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 		<tr>
@@ -137,7 +137,7 @@
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
 						<%-- <a href="/addPurchaseView.do?prod_no=<%=product.getProdNo() %>">구매</a> --%>
-						<a href="/addPurchaseView.do?prod_no=${product.prodNo}">구매</a>
+						<a href="/addPurchaseView.do?prodNo=${product.prodNo}">구매</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">

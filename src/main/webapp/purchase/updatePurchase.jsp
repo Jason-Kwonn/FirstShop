@@ -65,8 +65,8 @@ function fncAddPurchase() {
 		<td class="ct_write01">
 			<select 	name="paymentOption" 	class="ct_input_g" style="width: 100px; height: 19px" 
 							maxLength="20">
-				<option value="1" ${purchase.paymentOption() eq "현금구매" ? "selected" : ""}>현금구매</option>
-				<option value="2" ${purchase.paymentOption() eq "신용구매" ? "selected" : ""}>신용구매</option>
+				<option value="1" ${purchase.paymentOption eq "현금구매" ? "selected" : ""}>현금구매</option>
+				<option value="2" ${purchase.paymentOption eq "신용구매" ? "selected" : ""}>신용구매</option>
 			</select>
 		</td>
 	</tr>

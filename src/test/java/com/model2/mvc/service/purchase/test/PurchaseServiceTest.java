@@ -12,10 +12,13 @@ import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.purchase.PurchaseService;
+import com.model2.mvc.service.user.UserService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
 
@@ -107,7 +110,7 @@ public class PurchaseServiceTest {
 		search.setCurrentPage(1);
 	 	search.setPageSize(3);
 	 	
-	 	Map<String,Object> map = purchaseService.getPurchaseList(search);
+	 	Map<String,Object> map = purchaseService.getPurchaseList(search, "user01");
 	 	
 	 	List<Object> list = (List<Object>)map.get("list");
 	 	Assert.assertEquals(3, list.size());
@@ -124,7 +127,7 @@ public class PurchaseServiceTest {
 	 	search.setPageSize(3);
 	 	search.setSearchCondition("0");
 	 	search.setSearchKeyword("");
-	 	map = purchaseService.getPurchaseList(search);
+	 	map = purchaseService.getPurchaseList(search, "user01");
 	 	
 	 	list = (List<Object>)map.get("list");
 	 	Assert.assertEquals(3, list.size());

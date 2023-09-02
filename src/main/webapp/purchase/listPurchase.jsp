@@ -44,11 +44,11 @@
 	<tr>
 		<td class="ct_list_b" width="100">No</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">회원ID</td>
+		<td class="ct_list_b" width="150">제품명</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">회원명</td>
+		<td class="ct_list_b" width="150">제품정보</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b">전화번호</td>
+		<td class="ct_list_b">제품 수령자</td>
 		<td class="ct_line02"></td>
 		<td class="ct_list_b">배송현황</td>
 		<td class="ct_line02"></td>
@@ -60,20 +60,18 @@
 
 	
 	<c:set var="i" value="0" />
-	<c:forEach var="purchase" items="${purchaseList}">
+	<c:forEach var="purchase" items="${list}">
 	<c:set var="i" value="${ i+1 }" />
 	<tr class="ct_list_pop">
-		<td align="center">
-			<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${ i }</a>
-		</td>
+		<td align="center">${ i }</td>
 		<td></td>
 		<td align="left">
-			<a href="/getUser.do?userId=${purchase.buyer.userId}">${purchase.buyer.userId}</a>
+			<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${purchase.purchaseProd.prodName}</a>
 		</td>
 		<td></td>
-		<td align="left">${purchase.buyer.userName}</td>
+		<td align="left">${purchase.purchaseProd.prodDetail}</td>
 		<td></td>
-		<td align="left">${purchase.buyer.phone}</td>
+		<td align="left">${purchase.receiverName}</td>
 		<td></td>
 		<td align="left">현재
 					${purchase.tranCode}
@@ -94,7 +92,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
 	<tr>
 		<td align="center">
-			<input type="hidden" id="currentPage" name="currentPage" value=""/>
+			<input type="hidden" id="currentPage" name="currentPage" value="${resultPage.currentPage}"/>
 			<jsp:include page="../common/pageNavigator.jsp">
 				<jsp:param name="type" value="Purchase"/>
 			</jsp:include>

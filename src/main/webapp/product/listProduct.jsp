@@ -28,7 +28,7 @@
 	
 	<div style="width:98%; margin-left:10px;">
 	
-	<form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="get">
+	<form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="post">
 	
 	<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 		<tr>
@@ -142,7 +142,7 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
 		<td align="center">
-		<input type="hidden" id="currentPage" name="currentPage" value=""/>
+		<input type="hidden" id="currentPage" name="currentPage" value="${resultPage.currentPage}"/>
 		<jsp:include page="../common/pageNavigator.jsp">
 			<jsp:param name="type" value="Product"/>
 		</jsp:include>

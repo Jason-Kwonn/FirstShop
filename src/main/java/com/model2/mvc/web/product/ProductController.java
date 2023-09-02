@@ -1,6 +1,8 @@
 package com.model2.mvc.web.product;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -74,7 +76,7 @@ public class ProductController {
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
 		//Model 과 View 연결 
-		model.addAttribute(product);
+		model.addAttribute("product", product);
 		
 		// 쿠키에서 기존의 상품 번호 리스트를 가져옴
         Cookie[] cookies = request.getCookies();
@@ -112,7 +114,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/listProduct.do")
-	public String getProductList(@ModelAttribute Search search, Model model) throws Exception {
+	public String getProductList(@RequestParam("menu") String menu, @ModelAttribute("search") Search search, Model model) throws Exception {
 		
 		System.out.println("/listProduct.do");
 		
@@ -130,6 +132,7 @@ public class ProductController {
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
+		model.addAttribute("menu", menu);
 		
 		return "forward:/product/listProduct.jsp";
 	}

@@ -17,6 +17,8 @@
 		<result property="tranCode" column="tran_status_code" jdbcType="CHAR"/>
 		<result property="orderDate" column="order_date" jdbcType="DATE"/>
 		<result property="dlvyDate" column="dlvy_date" jdbcType="VARCHAR"/>
+		<result property="dlvyDate" column="dlvy_date" jdbcType="VARCHAR"/>
+		<result property="rowNum" 	column="row_seq" 	jdbcType="NUMERIC"/>
 		
 		<association property="purchaseProd"  javaType="product">
 			<id property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
@@ -27,6 +29,7 @@
 			<result property="fileName" column="image_file" jdbcType="VARCHAR"/>
 			<result property="regDate" column="prod_reg_date" jdbcType="DATE"/>
 			<result property="proTranCode" column="TRAN_STATUS_CODE" jdbcType="VARCHAR"/>
+			<result property="rowNum" 		column="row_seq" 	jdbcType="NUMERIC"/>
 		</association>
 		
 		<association property="buyer"  javaType="user">
@@ -38,7 +41,7 @@
 			<result property="phone" column="cell_phone" jdbcType="VARCHAR"/>
 			<result property="addr" column="addr" jdbcType="VARCHAR"/>
 			<result property="email" column="email" jdbcType="VARCHAR"/>
-			<result property="regDate" column="user_reg_date" jdbcType="DATE"/>
+			<result property="regDate" column="reg_date" jdbcType="DATE"/>
 		</association>
 	</resultMap>
 	
@@ -59,8 +62,8 @@
 		) 
 		VALUES (
 			seq_transaction_tran_no.nextval,
-			#{purchaseProd.prodNo},
-			#{buyer.userId},
+			#{purchaseProd.prodNo:NUMERIC},
+			#{buyer.userId:VARCHAR},
 			#{paymentOption:CHAR},
 			#{receiverName:VARCHAR},
 			#{receiverPhone:VARCHAR},
@@ -75,8 +78,18 @@
 	
 	<select id="getPurchase" parameterType="int" resultMap="purchaseSelectMap">
 	
-		select
-		t.TRAN_NO tranNo,
+		SELECT
+		t.*, 
+		p.*, 
+		u.*		
+		from TRANSACTION t, PRODUCT p, USERS u
+		
+		where t.prod_no = p.prod_no AND t.buyer_id = u.user_id 
+			AND t.tran_no = #{tranNo}
+	</select>
+	
+	<!-- 
+	t.TRAN_NO tranNo,
 		t.prod_no prodNo,
 		t.buyer_id buyer,
 		t.PAYMENT_OPTION paymentOption,
@@ -88,54 +101,61 @@
 		t.ORDER_DATE orderDate,
 		TO_CHAR(t.DLVY_DATE, 'YYYY-MM-DD') dlvyDate,
 		
-		p.PROD_NO prod_no,
-		p.PROD_NAME prod_name,
-		p.PROD_DETAIL prod_detail,
-		p.MANUFACTURE_DAY manufacture_day,
+		p.PROD_NO proNo,
+		p.PROD_NAME prodName,
+		p.PROD_DETAIL prodDetail,
+		p.MANUFACTURE_DAY manuDate,
 		p.PRICE price,
-		p.IMAGE_FILE image_file,
-		p.REG_DATE prod_reg_date,
-		t.TRAN_STATUS_CODE TRAN_STATUS_CODE,
+		p.IMAGE_FILE fileName,
+		p.REG_DATE regDate,
+		t.TRAN_STATUS_CODE proTranCode,
 		
-		u.USER_ID buyer_id,
+		u.USER_ID userId,
 		u.USER_NAME userName,
 		u.PASSWORD password,
 		u.ROLE role,
 		u.SSN ssn,
-		u.CELL_PHONE cell_phone,
+		u.CELL_PHONE phone,
 		u.ADDR addr,
 		u.EMAIL email,
-		u.REG_DATE user_reg_date
-				
-		from TRANSACTION t, PRODUCT p, USERS u
+		u.REG_DATE regDate
+	 -->
+	
+	<!-- 이게 아닌듯 하다..Map 을 활용해서 parameterType 1개로 접근해보자..
+	<parameterMap id="userId" type="java.lang.String">
+	  <parameter property="userId" jdbcType="VARCHAR"/>
+	</parameterMap>
+	 -->
 		
-		where t.prod_no = p.prod_no AND t.buyer_id = u.user_id 
-			AND t.tran_no = #{value}
+	<select id="getPurchaseList" parameterType="search" resultMap="purchaseSelectMap">
+			SELECT inner_table.*, ROWNUM AS row_seq
+			FROM (
+			    SELECT t.*
+			    FROM transaction t, product p, users u
+			    WHERE t.prod_no = p.prod_no
+			    AND t.buyer_id = u.user_id
+			) inner_table
+			WHERE ROWNUM &lt;= #{endRowNum})
+		    row_seq BETWEEN #{startRowNum} AND #{endRowNum}
 	</select>
 	
-	<select id="getPurchaseList" parameterType="search" resultMap="purchaseSelectMap">
-			SELECT *
-	  		FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM (
-	  						SELECT
-							tran_no tranNo,
-							prod_no prodNo,
-							buyer_id buyer,
-							payment_option paymentOption,
-							receiver_name receiverName,
-							receiver_phone receiverPhone,
-							dlvy_addr dlvyAddr,
-							dlvy_request dlvyRequest,
-							tran_status_code tranCode,
-							order_date orderDate,
-							TO_CHAR(dlvy_date, 'YYYY-MM-DD') dlvyDate
-							
-							FROM transaction
-							
-							) inner_table
-			WHERE ROWNUM &lt;= #{endRowNum} )
-			WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
-	</select>
+	<!-- 
+	t.tran_no AS tranNo,
+	t.prod_no AS prodNo,
+	t.buyer_id AS buyer,
+	t.payment_option AS paymentOption,
+	t.receiver_name AS receiverName,
+	t.receiver_phone AS receiverPhone,
+	t.dlvy_addr AS dlvyAddr,
+	t.dlvy_request AS dlvyRequest,
+	t.tran_status_code AS tranCode,
+	t.order_date AS orderDate,
+	TO_CHAR(t.dlvy_date, 'YYYY-MM-DD') AS dlvyDate,
+	u.user_id AS userId,
+	u.user_name AS userName,
+	u.cell_phone AS phone
+	 -->
+	
 		<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
 	 			WHERE ROWNUM <= #{endRowNum} ) 의미이며..
@@ -150,9 +170,9 @@
 	<update id="updatePurchase" parameterType="purchase">
 		UPDATE transaction
 		<set>
-			payment_option = #{paymentOption:VARCHAR}, 
+			payment_option = #{paymentOption:CHAR}, 
 			receiver_name = #{receiverName:VARCHAR}, 
-			receiver_phone = #{receiverPhone:CHAR}, 
+			receiver_phone = #{receiverPhone:VARCHAR}, 
 			dlvy_addr = #{dlvyAddr:VARCHAR}, 
 			dlvy_request = #{dlvyRequest:VARCHAR}, 
 			dlvy_date = #{dlvyDate:DATE}
@@ -176,6 +196,7 @@
 		WHERE prod_no = #{prodNo:NUMERIC}
 	</update>
 	
+	
 	<!-- SQL : SELECT ROW Count -->	 
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
@@ -183,7 +204,7 @@
 				ROWNUM,
 				t.tran_no tranNo,
 				t.prod_no prodNo,
-				t.buyer_id buyer,
+				t.buyer_id userId,
 				t.payment_option paymentOption,
 				t.receiver_name receiverName,
 				t.receiver_phone receiverPhone,
@@ -192,13 +213,10 @@
 				t.tran_status_code tranCode,
 				t.order_date orderDate,
 				TO_CHAR(t.dlvy_date, 'YYYY-MM-DD') dlvyDate,
-				
 				u.user_id userId
-				
 				FROM transaction t, users u
-				
 				WHERE t.buyer_id = u.user_id
-					AND u.user_id = #{userId}
+				AND u.user_id = #{userId}
 				) inner_table
 			) count_table					
 	 </select>
@@ -206,13 +224,13 @@
 	 <if test="searchCondition != null">
 					<where>
 						<if test="searchCondition == 0 and searchKeyword !='' ">
-			 				p.prod_no = #{searchKeyword}
+			 				p.prod_no LIKE '%' || #{searchKeyword} || '%'
 						</if>
 						<if test="searchCondition == 1 and searchKeyword !='' ">
-			 				p.prod_name = #{searchKeyword}
+			 				p.prod_name LIKE '%' || #{searchKeyword} || '%'
 						</if>
 						<if test="searchCondition == 2 and searchKeyword !='' ">
-			 				p.price = #{searchKeyword}
+			 				p.price LIKE '%' || #{searchKeyword} || '%'
 						</if>
 					</where>
 				</if>

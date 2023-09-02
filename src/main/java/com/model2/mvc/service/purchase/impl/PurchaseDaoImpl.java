@@ -1,14 +1,19 @@
 package com.model2.mvc.service.purchase.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.purchase.PurchaseDao;
 
 //==> 판매관리 DAO CRUD 구현
@@ -31,6 +36,11 @@ public class PurchaseDaoImpl implements PurchaseDao {
 	//Method
 	@Override
 	public void addPurchase(Purchase purchase) throws Exception {
+		
+//		purchase.setBuyer(sqlSession.selectOne("UserMapper.getUser", new User().getUserId()));
+//		purchase.set(sqlSession.selectOne("UserMapper.getUser", new User().getUserId()));
+		
+		
 		sqlSession.insert("PurchaseMapper.addPurchase", purchase);
 	}
 
@@ -41,6 +51,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
 	@Override
 	public List<Purchase> getPurchaseList(Search search) throws Exception {
+		
 		return sqlSession.selectList("PurchaseMapper.getPurchaseList", search);
 	}
 
@@ -51,6 +62,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
 	@Override
 	public int getTotalCount(Search search) throws Exception {
+		
 		return sqlSession.selectOne("ProductMapper.getTotalCount", search);
 	}
 

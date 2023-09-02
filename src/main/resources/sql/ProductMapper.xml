@@ -16,8 +16,11 @@
 		<result property="fileName" 		column="image_file" 			jdbcType="VARCHAR" />
 		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
 		<result property="rowNum" 		column="row_seq" 			jdbcType="NUMERIC"/>
+		<result property="proTranCode" column="TRAN_STATUS_CODE" jdbcType="CHAR"/>
 	</resultMap>
-
+	
+	
+	
 	<!-- SQL : INSERT -->
 	<insert 	id="addProduct"		parameterType="product" >
 	 	INSERT
@@ -58,13 +61,13 @@
 											<if test="searchCondition != null">
 												<where>
 													<if test="searchCondition == 0 and searchKeyword !='' ">
-										 				p.prod_no = #{searchKeyword}
+										 				p.prod_no LIKE '%' || #{searchKeyword} || '%'
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
-										 				p.prod_name = #{searchKeyword}
+										 				p.prod_name LIKE '%' || #{searchKeyword} || '%'
 													</if>
 													<if test="searchCondition == 2 and searchKeyword !='' ">
-										 				p.price = #{searchKeyword}
+										 				p.price = LIKE '%' || #{searchKeyword} || '%'
 													</if>
 												</where>
 											</if>
@@ -93,13 +96,13 @@
 						<if test="searchCondition != null">
 							<where>
 								<if test="searchCondition == 0 and searchKeyword !='' ">
-					 				p.prod_no = #{searchKeyword}
+					 				p.prod_no LIKE '%' || #{searchKeyword} || '%'
 								</if>
 								<if test="searchCondition == 1 and searchKeyword !='' ">
-					 				p.prod_name = #{searchKeyword}
+					 				p.prod_name LIKE '%' || #{searchKeyword} || '%'
 								</if>
 								<if test="searchCondition == 2 and searchKeyword !='' ">
-					 				p.price = #{searchKeyword}
+					 				p.price LIKE '%' || #{searchKeyword} || '%'
 								</if>
 							</where>
 						</if> ) countTable						
