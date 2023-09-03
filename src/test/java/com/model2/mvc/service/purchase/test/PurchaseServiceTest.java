@@ -110,7 +110,7 @@ public class PurchaseServiceTest {
 		search.setCurrentPage(1);
 	 	search.setPageSize(3);
 	 	
-	 	Map<String,Object> map = purchaseService.getPurchaseList(search, "user01");
+	 	Map<String,Object> map = purchaseService.getPurchaseList(search);
 	 	
 	 	List<Object> list = (List<Object>)map.get("list");
 	 	Assert.assertEquals(3, list.size());
@@ -127,7 +127,7 @@ public class PurchaseServiceTest {
 	 	search.setPageSize(3);
 	 	search.setSearchCondition("0");
 	 	search.setSearchKeyword("");
-	 	map = purchaseService.getPurchaseList(search, "user01");
+	 	map = purchaseService.getPurchaseList(search);
 	 	
 	 	list = (List<Object>)map.get("list");
 	 	Assert.assertEquals(3, list.size());

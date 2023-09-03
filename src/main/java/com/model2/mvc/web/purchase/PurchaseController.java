@@ -185,29 +185,28 @@ public class PurchaseController {
 		purchase.setPurchaseProd(product);
 		purchase.setTranCode(tranCode);
 		
-		purchaseService.updateTranCodeByProd(purchase);
+		System.out.println(purchase);
 		
-		System.out.println(purchase.toString());
+		purchaseService.updateTranCodeByProd(purchase);
 		
 		return "redirect:/listProduct.do?menu=manage";
 		
 	}
 	
 	@RequestMapping("/updateTranCode.do")
-	public String updateTranCode(@RequestParam int prodNo, @RequestParam String tranCode, 
+	public String updateTranCode(@RequestParam int tranNo, @RequestParam String tranCode, 
 										@ModelAttribute Purchase purchase) throws Exception {
 		
-		System.out.println("/updateTranCodeByProd.do");
+		System.out.println("/updateTranCode.do");
 		
 		//Business Logic
-		Product product = new Product();
-		product.setProdNo(prodNo);
-		purchase.setPurchaseProd(product);
+		
+		purchase.setTranNo(tranNo);
 		purchase.setTranCode(tranCode);
 		
-		purchaseService.updateTranCode(purchase);
+		System.out.println(purchase);
 		
-		System.out.println(purchase.toString());
+		purchaseService.updateTranCode(purchase);
 		
 		return "redirect:/listPurchase.do";
 		

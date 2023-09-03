@@ -128,15 +128,17 @@
 	 -->
 		
 	<select id="getPurchaseList" parameterType="search" resultMap="purchaseSelectMap">
-			SELECT inner_table.*, ROWNUM AS row_seq
+			SELECT * 
 			FROM (
-			    SELECT t.*
-			    FROM transaction t, product p, users u
-			    WHERE t.prod_no = p.prod_no
-			    AND t.buyer_id = u.user_id
-			) inner_table
-			WHERE ROWNUM &lt;= #{endRowNum})
-		    row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+				SELECT inner_table.*, ROWNUM AS row_seq
+				FROM (
+				    SELECT 
+				    ROWNUM, t.*, u.* 
+				    FROM transaction t, users u 
+				    WHERE t.buyer_id = u.user_id 
+				) inner_table 
+				WHERE ROWNUM &lt;= #{endRowNum})
+		    WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
 	</select>	
 	
 	<!-- 
@@ -185,7 +187,7 @@
 		<set>
 			tran_status_code = #{tranCode:INTEGER}
 		</set>
-		WHERE prod_no = #{prodNo:NUMERIC}
+		WHERE prod_no = #{purchaseProd.prodNo:NUMERIC}
 	</update>
 	
 	<update id="updateTranCodeDlvToRcv" parameterType="purchase">
@@ -193,7 +195,7 @@
 		<set>
 			tran_status_code = #{tranCode:INTEGER}
 		</set>
-		WHERE prod_no = #{prodNo:NUMERIC}
+		WHERE tran_no = #{tranNo:NUMERIC}
 	</update>
 	
 	
