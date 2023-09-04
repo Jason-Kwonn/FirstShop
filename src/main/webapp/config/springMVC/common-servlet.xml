@@ -2,9 +2,7 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 		xmlns:context="http://www.springframework.org/schema/context"
-		
 		xmlns:mvc="http://www.springframework.org/schema/mvc"
-		
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation=
 				"http://www.springframework.org/schema/beans 
@@ -27,16 +25,16 @@
 		<context:exclude-filter 	type="annotation" 	expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan> 
 	
-   	
-   	<!-- ////////////////////////////////////////// 추가 ,  변경된 부분 ////////////////////////////////////////////////// -->
-   	<!-- ■ RequestMappingHandlerMapping 설정 등 기타 Annotation 기반
+	
+   	<!-- ■ DefaultAnnotationHandlerMapping 설정 등 기타 Annotation 기반
    	        모든 기능을 사용 할 수 있는 아래의 설정으로 변경 -->
 	<mvc:annotation-driven />
 	
+	
 	<!-- ■ Annotation 기반의 모든 기능을 사용 할 수 있는 설정
 	          <mvc:annotation-driven /> 사용으로 interceptor 를 직접
-	          RequestMappingHandlerMapping 에 주입 할 수 없으니 
-	       	  아래의 설정방법으로 interceptor 주입-->
+	          DefaultAnnotationHandlerMapping 에 주입 할 수 없으니 
+	       	  아래의 설정방법으로 interceptor 주입
    	<mvc:interceptors>
 		
    		<mvc:interceptor>
@@ -45,20 +43,9 @@
    		</mvc:interceptor>
 
    	</mvc:interceptors>
-	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-	
-	 
-	 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 		::  Annotation 지원 HandlerMapping 선언 
-	        :: Interceptor 선언 : 로그인 유무확인.  추가 부분
-	 <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-	 	 <property name="order" value="0"/>
-		<property name="interceptors" ref="logonCheckInterceptor"/>
-	 </bean>
-	 
-	 		:: Interceptor 선언 : 로그인 유무확인.
-	<bean id="logonCheckInterceptor"	class="com.model2.mvc.common.web.LogonCheckInterceptor" />
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->		           
+   	
+   	:: 본실습에서는 주석처리 : 추후 PJT 시 RestFul 고려 LogonCheckInterceptor 조건 추가할것
+   	-->
 
 
 	<!--  :: ViewResolver 선언 -->	
@@ -66,7 +53,6 @@
 				class="org.springframework.web.servlet.view.InternalResourceViewResolver" />
 	
 	
-	<!-- ////////////////////////////////////////// 추가 ,  변경된 부분 ////////////////////////////////////////////////// -->
 	<!--	
 		■ / 형식의 Mapping 은 모든(정적,동적 자원) 요청시 처리책임
 		■ 정적자원 요청시 DispatcherServlet 에게 처리방법지정
@@ -79,7 +65,6 @@
 	<mvc:resources mapping="/css/**" location="/css/" />
    	<mvc:resources mapping="/images/**" location="/images/" />
    	<mvc:resources mapping="/javascript/**" location="/javascript/" />
-	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
    	
 
 	<!-- 	:: exception resolver  선언 :: 서술적 / 선언적 예외처리 
