@@ -53,7 +53,7 @@ public class PurchaseController {
 	//Method
 //	@RequestMapping("/addPurchaseView.do")
 	@RequestMapping(value="addPurchase", method=RequestMethod.GET)
-	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo, 
+	public ModelAndView addPurchase(@RequestParam("prodNo") int prodNo, 
 							@ModelAttribute Purchase purchase, HttpSession session, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/addPurchase : GET");
@@ -65,10 +65,10 @@ public class PurchaseController {
 		purchase.setBuyer(user);
 		purchase.setPurchaseProd(productService.getProduct(prodNo));
 		
-		modelAndView.setViewName("/purchase/addPurchase");
+		modelAndView.setViewName("/purchase/addPurchaseView.jsp");
 		modelAndView.addObject("purchase", purchase);
 		
-		System.out.println(purchase.toString());
+		System.out.println(purchase);
 		
 		return modelAndView;
 		
@@ -85,8 +85,12 @@ public class PurchaseController {
 		purchase.setPurchaseProd(product);
 		purchase.setBuyer(user);
 		
-		
 		purchaseService.addPurchase(purchase);
+		
+		modelAndView.setViewName("/purchase/addPurchaseResult.jsp");
+		modelAndView.addObject("purchase", purchase);
+		
+		System.out.println(purchase);
 		
 		return modelAndView;
 		
@@ -94,7 +98,7 @@ public class PurchaseController {
 	
 //	@RequestMapping("/getPurchase.do")
 	@RequestMapping(value="getPurchase", method=RequestMethod.GET)
-	public String getPurchase(@RequestParam("tranNo") int tranNo, HttpSession session, Model model) throws Exception {
+	public ModelAndView getPurchase(@RequestParam("tranNo") int tranNo, HttpSession session, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/getPurchase : GET");
 		//Business Logic
@@ -111,17 +115,18 @@ public class PurchaseController {
 		
 		purchase.setDlvyDate(purchase.getDlvyDate().substring(0, 10));
 		
-		model.addAttribute("purchase", purchase);
+		modelAndView.setViewName("/purchase/getPurchase.jsp?tranNo=" + tranNo);
+		modelAndView.addObject("purchase", purchase);
 		
-		System.out.println(purchase.toString());
+		System.out.println(purchase);
 		
-		return "forward:/purchase/getPurchase.jsp";
+		return modelAndView;
 		
 	}
 	
 //	@RequestMapping("/listPurchase.do")
 	@RequestMapping(value="listPurchase")
-	public String getPurchaseList(@ModelAttribute Search search, Model model) throws Exception {
+	public ModelAndView getPurchaseList(@ModelAttribute Search search, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/listPurchase : GET / POST");
 		
@@ -136,18 +141,21 @@ public class PurchaseController {
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
 		
-		//Model 과 View 연결 
-		model.addAttribute("list", map.get("list"));
-		model.addAttribute("resultPage", resultPage);
-		model.addAttribute("search", search);
+		//Model 과 View 연결
+		modelAndView.setViewName("/purchase/listPurchase.jsp");
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("resultPage", resultPage);
+		modelAndView.addObject("search", search);
 		
-		return "forward:/purchase/listPurchase.jsp";
+		System.out.println(map.get("list"));
+		
+		return modelAndView;
 		
 	}
 	
 //	@RequestMapping("/updatePurchaseView.do")
 	@RequestMapping(value="updatePurchase", method=RequestMethod.GET)
-	public String updatePurchaseView(@RequestParam int tranNo, @ModelAttribute Purchase purchase, Model model) throws Exception {
+	public ModelAndView updatePurchase(@RequestParam int tranNo, @ModelAttribute Purchase purchase, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/updatePurchase : GET");
 		
@@ -156,33 +164,37 @@ public class PurchaseController {
 		
 		purchase.setDlvyDate(purchase.getDlvyDate().replace("-", "").substring(0, 8));
 		
-		model.addAttribute("purchase", purchase);
+		modelAndView.setViewName("/purchase/updatePurchase.jsp");
+		modelAndView.addObject("purchase", purchase);
 		
 		System.out.println(purchase.toString());
 		
-		return "forward:/purchase/updatePurchase.jsp";
+		return modelAndView;
 		
 	}
 	
 //	@RequestMapping("/updatePurchase.do")
 	@RequestMapping(value="updatePurchase", method=RequestMethod.POST)
-	public String updatePurchase(@RequestParam int tranNo, @ModelAttribute Purchase purchase) throws Exception {
+	public ModelAndView updatePurchase(@ModelAttribute Purchase purchase, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/updatePurchase : POST");
 		
 		//Business Logic
 		purchaseService.updatePurchase(purchase);
 		
+		modelAndView.setViewName("/purchase/listPurchase");
+		modelAndView.addObject("purchase", purchase);
+		
 		System.out.println(purchase.toString());
 		
-		return "redirect:/getPurchase.do?tranNo=" + tranNo;
+		return modelAndView;
 		
 	}
 	
 //	@RequestMapping("/updateTranCodeByProd.do")
 	@RequestMapping(value="updateTranCodeByProd", method=RequestMethod.GET)
-	public String updateTranCodeByProd(@RequestParam int prodNo, @RequestParam String tranCode, 
-										@ModelAttribute Purchase purchase) throws Exception {
+	public ModelAndView updateTranCodeByProd(@RequestParam int prodNo, @RequestParam String tranCode, 
+										@ModelAttribute Purchase purchase, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/updateTranCodeByProd : GET");
 		
@@ -196,14 +208,17 @@ public class PurchaseController {
 		
 		purchaseService.updateTranCodeByProd(purchase);
 		
-		return "redirect:/listProduct.do?menu=manage";
+		modelAndView.setViewName("/product/listProduct?menu=manage");
+		modelAndView.addObject("purchase", purchase);
+		
+		return modelAndView;
 		
 	}
 	
 //	@RequestMapping("/updateTranCode.do")
 	@RequestMapping(value="updateTranCode", method=RequestMethod.POST)
-	public String updateTranCode(@RequestParam int tranNo, @RequestParam String tranCode, 
-										@ModelAttribute Purchase purchase) throws Exception {
+	public ModelAndView updateTranCode(@RequestParam int tranNo, @RequestParam String tranCode, 
+										@ModelAttribute Purchase purchase, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/updateTranCode : POST");
 		
@@ -216,7 +231,10 @@ public class PurchaseController {
 		
 		purchaseService.updateTranCode(purchase);
 		
-		return "redirect:/listPurchase.do";
+		modelAndView.setViewName("/purchase/listPurchase");
+		modelAndView.addObject("purchase", purchase);
+		
+		return modelAndView;
 		
 	}
 	
