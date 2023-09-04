@@ -24,7 +24,7 @@ function fncAddPurchase() {
 
 <body>
 <!-- prodNo=${purchase.purchaseProd.prodNo} -->
-<form name="purchase" method="post" action="/addPurchase.do">
+<form name="purchase" method="post" action="/purchase/addPurchase">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

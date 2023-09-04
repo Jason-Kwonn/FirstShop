@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -25,6 +27,7 @@ import com.model2.mvc.web.product.ProductController;
 import com.model2.mvc.web.user.UserController;
 
 @Controller
+@RequestMapping("/purchase/*")
 public class PurchaseController {
 	
 	//Field
@@ -41,22 +44,19 @@ public class PurchaseController {
 		System.out.println(this.getClass());
 	}
 	
-	//==> classpath:config/common.properties  ,  classpath:config/commonservice.xml 참조 할것
-	//==> 아래의 두개를 주석을 풀어 의미를 확인 할것
 	@Value("#{commonProperties['pageUnit']}")
-	//@Value("#{commonProperties['pageUnit'] ?: 3}")
 	int pageUnit;
 	
 	@Value("#{commonProperties['pageSize']}")
-	//@Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
 		
 	//Method
-	@RequestMapping("/addPurchaseView.do")
-	public String addPurchaseView(@RequestParam("prodNo") int prodNo, 
-							@ModelAttribute Purchase purchase, HttpSession session, Model model) throws Exception {
+//	@RequestMapping("/addPurchaseView.do")
+	@RequestMapping(value="addPurchase", method=RequestMethod.GET)
+	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo, 
+							@ModelAttribute Purchase purchase, HttpSession session, ModelAndView modelAndView) throws Exception {
 		
-		System.out.println("/addPurchaseView.do?prodNo=" + String.valueOf(prodNo));
+		System.out.println("/purchase/addPurchase : GET");
 		
 		//Business Logic
 //		product = productService.getProduct(prodNo);
@@ -65,35 +65,38 @@ public class PurchaseController {
 		purchase.setBuyer(user);
 		purchase.setPurchaseProd(productService.getProduct(prodNo));
 		
-		model.addAttribute("purchase", purchase);
+		modelAndView.setViewName("/purchase/addPurchase");
+		modelAndView.addObject("purchase", purchase);
 		
 		System.out.println(purchase.toString());
 		
-		return "forward:/purchase/addPurchaseView.jsp";
+		return modelAndView;
 		
 	}
 	
-	@RequestMapping("/addPurchase.do")
-	public String addPurchase(@ModelAttribute("purchase") Purchase purchase, @ModelAttribute Product product, @ModelAttribute User user) throws Exception {
+//	@RequestMapping("/addPurchase.do")
+	@RequestMapping(value="addPurchase", method=RequestMethod.POST)
+	public ModelAndView addPurchase(@ModelAttribute("purchase") Purchase purchase, @ModelAttribute Product product, 
+									@ModelAttribute User user, ModelAndView modelAndView) throws Exception {
 		
-		System.out.println("/addPurchase.do");
+		System.out.println("/purchase/addPurchase : POST");
 		
 		//Business Logic
 		purchase.setPurchaseProd(product);
 		purchase.setBuyer(user);
 		
+		
 		purchaseService.addPurchase(purchase);
 		
-		System.out.println(purchase.toString());
-		
-		return "forward:/purchase/addPurchaseResult.jsp";
+		return modelAndView;
 		
 	}
 	
-	@RequestMapping("/getPurchase.do")
+//	@RequestMapping("/getPurchase.do")
+	@RequestMapping(value="getPurchase", method=RequestMethod.GET)
 	public String getPurchase(@RequestParam("tranNo") int tranNo, HttpSession session, Model model) throws Exception {
 		
-		System.out.println("/getPurchase.do");
+		System.out.println("/purchase/getPurchase : GET");
 		//Business Logic
 		Purchase purchase = purchaseService.getPurchase(tranNo);
 		
@@ -116,10 +119,11 @@ public class PurchaseController {
 		
 	}
 	
-	@RequestMapping("/listPurchase.do")
+//	@RequestMapping("/listPurchase.do")
+	@RequestMapping(value="listPurchase")
 	public String getPurchaseList(@ModelAttribute Search search, Model model) throws Exception {
 		
-		System.out.println("/listPurchase.do");
+		System.out.println("/purchase/listPurchase : GET / POST");
 		
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
@@ -141,10 +145,11 @@ public class PurchaseController {
 		
 	}
 	
-	@RequestMapping("/updatePurchaseView.do")
+//	@RequestMapping("/updatePurchaseView.do")
+	@RequestMapping(value="updatePurchase", method=RequestMethod.GET)
 	public String updatePurchaseView(@RequestParam int tranNo, @ModelAttribute Purchase purchase, Model model) throws Exception {
 		
-		System.out.println("/updatePurchaseView.do?tranNo=" + String.valueOf(tranNo));
+		System.out.println("/purchase/updatePurchase : GET");
 		
 		//Business Logic
 		purchase = purchaseService.getPurchase(tranNo);
@@ -159,10 +164,11 @@ public class PurchaseController {
 		
 	}
 	
-	@RequestMapping("/updatePurchase.do")
+//	@RequestMapping("/updatePurchase.do")
+	@RequestMapping(value="updatePurchase", method=RequestMethod.POST)
 	public String updatePurchase(@RequestParam int tranNo, @ModelAttribute Purchase purchase) throws Exception {
 		
-		System.out.println("/updatePurchase.do?tranNo=" + String.valueOf(tranNo));
+		System.out.println("/purchase/updatePurchase : POST");
 		
 		//Business Logic
 		purchaseService.updatePurchase(purchase);
@@ -173,11 +179,12 @@ public class PurchaseController {
 		
 	}
 	
-	@RequestMapping("/updateTranCodeByProd.do")
+//	@RequestMapping("/updateTranCodeByProd.do")
+	@RequestMapping(value="updateTranCodeByProd", method=RequestMethod.GET)
 	public String updateTranCodeByProd(@RequestParam int prodNo, @RequestParam String tranCode, 
 										@ModelAttribute Purchase purchase) throws Exception {
 		
-		System.out.println("/updateTranCodeByProd.do");
+		System.out.println("/purchase/updateTranCodeByProd : GET");
 		
 		//Business Logic
 		Product product = new Product();
@@ -193,11 +200,12 @@ public class PurchaseController {
 		
 	}
 	
-	@RequestMapping("/updateTranCode.do")
+//	@RequestMapping("/updateTranCode.do")
+	@RequestMapping(value="updateTranCode", method=RequestMethod.POST)
 	public String updateTranCode(@RequestParam int tranNo, @RequestParam String tranCode, 
 										@ModelAttribute Purchase purchase) throws Exception {
 		
-		System.out.println("/updateTranCode.do");
+		System.out.println("/purchase/updateTranCode : POST");
 		
 		//Business Logic
 		

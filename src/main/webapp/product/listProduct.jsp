@@ -28,7 +28,7 @@
 	
 	<div style="width:98%; margin-left:10px;">
 	
-	<form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="post">
+	<form name="detailForm" action="/product/listProduct?menu=${param.menu}" method="post">
 	
 	<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 		<tr>
@@ -110,11 +110,11 @@
 			<td align="center">${ i }</td>
 			<td></td>
 			<td align="left">
-				<c:set var="getUpdate" value="/getProduct"/>
+				<c:set var="getUpdate" value="/product/getProduct"/>
 				<c:if test="${param.menu eq 'manage' }">
-					<c:set var="getUpdate" value="/updateProductView"/>
+					<c:set var="getUpdate" value="/product/updateProduct"/>
 				</c:if>
-				<a href="${getUpdate}.do?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a>
+				<a href="${getUpdate}?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a>
 			</td>
 			<td></td>
 			<td align="left">${product.price}</td>
@@ -125,7 +125,7 @@
 				<c:choose>
 					<c:when test="${param.menu eq 'manage' && product.proTranCode eq '구매완료'}">
 						${product.proTranCode}
-						<a href="/updateTranCodeByProd.do?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
+						<a href="/product/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
 					</c:when>
 					<c:otherwise>
 						${product.proTranCode}

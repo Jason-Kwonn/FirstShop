@@ -19,7 +19,7 @@ ${response.setCharacterEncoding("euc-kr")}
 <c:set var="cookieHistory" value="${ cookie['history'].value }"/>
 
 <c:forEach var="prodNo" items="${ fn:split(cookieHistory , '/') }">
-	    <a href="/getProduct.do?prodNo=${prodNo}&menu=search" target="rightFrame">${prodNo}</a>
+	    <a href="/product/getProduct.do?prodNo=${prodNo}&menu=search" target="rightFrame">${prodNo}</a>
 	    <br>
 </c:forEach>
 

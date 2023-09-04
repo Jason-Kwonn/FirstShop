@@ -137,7 +137,7 @@
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
 						<%-- <a href="/addPurchaseView.do?prod_no=<%=product.getProdNo() %>">구매</a> --%>
-						<a href="/addPurchaseView.do?prodNo=${product.prodNo}">구매</a>
+						<a href="/purchase/addPurchase?prodNo=${product.prodNo}">구매</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">

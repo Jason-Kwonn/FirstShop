@@ -24,7 +24,10 @@
 
 <div style="width:98%; margin-left:10px;">
 
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 <form name="detailForm" action="/listUser.do" method="post">
+////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<form name="detailForm" action="/user/listUser" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -52,7 +55,7 @@
 				<option value="1"  ${ ! empty search.searchCondition && search.searchCondition==1 ? "selected" : "" }>È¸¿ø¸í</option>
 			</select>
 			<input type="text" name="searchKeyword" 
-						value="${! empty search.searchKeyword ? search.searchKeyword : ''}"  
+						value="${! empty search.searchKeyword ? search.searchKeyword : ""}"  
 						class="ct_input_g" style="width:200px; height:20px" > 
 		</td>
 		<td align="right" width="70">
@@ -94,7 +97,11 @@
 		<tr class="ct_list_pop">
 			<td align="center">${ i }</td>
 			<td></td>
-			<td align="left"><a href="/getUser.do?userId=${user.userId}">${user.userId}</a></td>
+			<td align="left">
+				<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				<a href="/getUser.do?userId=${user.userId}">${user.userId}</a></td>
+               	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+			<a href="/user/getUser?userId=${user.userId}">${user.userId}</a></td>
 			<td></td>
 			<td align="left">${user.userName}</td>
 			<td></td>
@@ -111,11 +118,9 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top:10px;">
 	<tr>
 		<td align="center">
-		   <input type="hidden" id="currentPage" name="currentPage" value="${resultPage.currentPage}"/>
+		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
 	
-			<jsp:include page="../common/pageNavigator.jsp">
-				<jsp:param name="type" value="User"/>
-			</jsp:include>	
+			<jsp:include page="../common/pageNavigator.jsp"/>	
 			
     	</td>
 	</tr>

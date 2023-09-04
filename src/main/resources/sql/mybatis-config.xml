@@ -18,7 +18,6 @@
 		<typeAlias alias="product" type="com.model2.mvc.service.domain.Product" />
 		<typeAlias alias="purchase" type="com.model2.mvc.service.domain.Purchase" />
 		<typeAlias alias="search" type="com.model2.mvc.common.Search" />
-		<typeAlias alias="page" type="com.model2.mvc.common.Page" />
 	</typeAliases>
 	
 	 <!-- SQL Definition :: file include -->
