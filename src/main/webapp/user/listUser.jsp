@@ -53,7 +53,7 @@
 			
 			
 			//==> 아래와 같이 정의한 이유는 ??
-			//==> 아래의 주석을 하나씩 풀어 가며 이해하세요.					
+			//==> 아래의 주석을 하나씩 풀어 가며 이해하자.					
 			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
 			//console.log ( $(".ct_list_pop:nth-child(1)" ).html() );
 			//console.log ( $(".ct_list_pop:nth-child(2)" ).html() );
