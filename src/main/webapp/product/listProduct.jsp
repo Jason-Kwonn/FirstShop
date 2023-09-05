@@ -45,18 +45,28 @@
 			//==> prodName LINK Event 연결처리
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			//==> 3 과 1 방법 조합 : $(".className tagName:filter함수") 사용함.
+			// 현재 페이지의 URL을 가져옵니다.
+			var url = window.location.search;
+			
+			// URL을 파싱하여 URLSearchParams 객체를 생성합니다.
+			var urlSearchParams = new URLSearchParams(url);
+			
+			// menu 파라미터를 가져옵니다.
+			var menu = urlSearchParams.get("menu");
+			console.log(menu);
+			
 			$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
 					//Debug..
-					//alert(  $( this ).text().trim() );
-					$if(param.menu === "search"){
-						self.location ="/product/getProduct?prodNo="+$(this).text().trim();	
+					alert(  $( this ).text().trim() );
+					if(menu === "search"){
+						self.location ="/product/getProduct?prodNo="+$(this).text().trim()+"&menu="+menu;	
 					} else {
-						self.location ="/product/updateProduct?prodNo="+$(this).text().trim();
+						self.location ="/product/updateProduct?prodNo="+$(this).text().trim()+"&menu="+menu;
 					}
 					
 			});
 			
-			//==> UI 수정 추가부분  :  prodName LINK Event End User 에게 보일수 있도록 
+			//==> UI 수정 추가부분  :  prodNo LINK Event End User 에게 보일수 있도록 
 			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
 			$("h7").css("color" , "red");
 			
@@ -191,7 +201,7 @@
 				<c:choose>
 					<c:when test="${param.menu eq 'manage' && product.proTranCode eq '구매완료'}">
 						${product.proTranCode}
-						<a href="/product/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
+						<a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a>
 					</c:when>
 					<c:otherwise>
 						${product.proTranCode}

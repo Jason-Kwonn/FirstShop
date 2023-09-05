@@ -53,7 +53,7 @@ public class PurchaseController {
 	//Method
 //	@RequestMapping("/addPurchaseView.do")
 	@RequestMapping(value="addPurchase", method=RequestMethod.GET)
-	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo, 
+	public ModelAndView addPurchase(@RequestParam("prodNo") int prodNo, 
 							@ModelAttribute Purchase purchase, HttpSession session, ModelAndView modelAndView) throws Exception {
 		
 		System.out.println("/purchase/addPurchase : GET");
@@ -65,7 +65,7 @@ public class PurchaseController {
 		purchase.setBuyer(user);
 		purchase.setPurchaseProd(productService.getProduct(prodNo));
 		
-		modelAndView.setViewName("/purchase/addPurchase");
+		modelAndView.setViewName("/purchase/addPurchaseView.jsp");
 		modelAndView.addObject("purchase", purchase);
 		
 		System.out.println(purchase.toString());
@@ -87,6 +87,9 @@ public class PurchaseController {
 		
 		
 		purchaseService.addPurchase(purchase);
+		
+		modelAndView.setViewName("addPurchaseResultView.jsp");
+		modelAndView.addObject("purchase", purchase);
 		
 		return modelAndView;
 		
@@ -175,7 +178,7 @@ public class PurchaseController {
 		
 		System.out.println(purchase.toString());
 		
-		return "redirect:/getPurchase.do?tranNo=" + tranNo;
+		return "redirect:/purchase/getPurchase?tranNo=" + tranNo;
 		
 	}
 	
@@ -196,16 +199,16 @@ public class PurchaseController {
 		
 		purchaseService.updateTranCodeByProd(purchase);
 		
-		return "redirect:/listProduct.do?menu=manage";
+		return "redirect:/product/listProduct?menu=manage";
 		
 	}
 	
 //	@RequestMapping("/updateTranCode.do")
-	@RequestMapping(value="updateTranCode", method=RequestMethod.POST)
+	@RequestMapping(value="updateTranCode", method=RequestMethod.GET)
 	public String updateTranCode(@RequestParam int tranNo, @RequestParam String tranCode, 
 										@ModelAttribute Purchase purchase) throws Exception {
 		
-		System.out.println("/purchase/updateTranCode : POST");
+		System.out.println("/purchase/updateTranCode : GET");
 		
 		//Business Logic
 		
@@ -216,7 +219,7 @@ public class PurchaseController {
 		
 		purchaseService.updateTranCode(purchase);
 		
-		return "redirect:/listPurchase.do";
+		return "redirect:/purchase/listPurchase";
 		
 	}
 	

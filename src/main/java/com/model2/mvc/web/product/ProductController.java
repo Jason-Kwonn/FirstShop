@@ -70,14 +70,14 @@ public class ProductController {
 	}
 	
 //	@RequestMapping("/getProduct.do")
-	@RequestMapping(value="getProduct", method=RequestMethod.GET)
-	public String getProduct(@RequestParam("prodNo") int prodNo, Model model, 
+	@RequestMapping(value="getProduct")
+	public String getProduct(@RequestParam("prodNo") int prodNo, Model model, @RequestParam("menu") String menu, 
 							HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		System.out.println("/product/getProduct : GET");
+		System.out.println("/product/getProduct");
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
-		//Model 과 View 연결 
+		//Model 과 View 연결
 		model.addAttribute("product", product);
 		
 		// 쿠키에서 기존의 상품 번호 리스트를 가져옴
@@ -109,8 +109,7 @@ public class ProductController {
         	response.addCookie(newCookie);
         	System.out.println("newCookie : " + newCookie.getValue());
         }
-		
-		
+       
 		return "forward:/product/getProduct.jsp";
 		
 	}
