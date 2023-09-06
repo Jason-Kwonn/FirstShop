@@ -14,6 +14,7 @@ public class Product {
 	private Date regDate;
 	private String proTranCode;
 	private int rowNum;
+	private int productQty; //상품 재고 수량
 	
 	public Product(){
 	}
@@ -75,10 +76,18 @@ public class Product {
 		this.rowNum = rowNum;
 	}
 
+	public int getProductQty() {
+		return productQty;
+	}
+
+	public void setProductQty(int productQty) {
+		this.productQty = productQty;
+	}
+
 	// Override
 	public String toString() {
 		return "ProductVO : [fileName]" + fileName
 				+ "[manuDate]" + manuDate+ "[price]" + price + "[prodDetail]" + prodDetail
-				+ "[prodName]" + prodName + "[prodNo]" + prodNo;
+				+ "[prodName]" + prodName + "[prodNo]" + prodNo + "[productQty]" + productQty;
 	}	
 }

@@ -30,6 +30,7 @@
 			<result property="regDate" column="prod_reg_date" jdbcType="DATE"/>
 			<result property="proTranCode" column="TRAN_STATUS_CODE" jdbcType="VARCHAR"/>
 			<result property="rowNum" 		column="row_seq" 	jdbcType="NUMERIC"/>
+			<result property="productQty" 		column="product_quantity" 		jdbcType="INTEGER"/>
 		</association>
 		
 		<association property="buyer"  javaType="user">

@@ -49,13 +49,14 @@
 		//document.detailForm.action='/product/updateProduct';
 		//document.detailForm.submit();
 		$("form").attr("method" , "POST").attr("action" , "/product/updateProduct").submit();
+	}
 		//==> 추가된부분 : "수정"  Event 연결
 		$(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
 			 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
 				//Debug..
-				//alert(  $( "td.ct_btn01:contains('수정')" ).html() );
+				alert(  $( "td.ct_btn01:contains('수정')" ).html() );
 				fncUpdateProduct();
 			});
 		});
@@ -74,8 +75,6 @@
 				history.go(-1);
 			});
 		});
-		
-	}
 	
 	</script>
 	</head>
@@ -164,6 +163,19 @@
 			<td class="ct_write01">
 				<input type="text" name="price" value="${product.price}"
 							class="ct_input_g" style="width: 100px; height: 19px" maxLength="50"/>&nbsp;원
+			</td>
+		</tr>
+		<tr>
+			<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+		</tr>
+		<tr>
+			<td width="104" class="ct_write">
+				수량 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			</td>
+			<td bgcolor="D6D6D6" width="1"></td>
+			<td class="ct_write01">
+				<input type="text" name="productQty" value="${product.productQty}"
+							class="ct_input_g" style="width: 100px; height: 19px" maxLength="50"/>&nbsp;EA
 			</td>
 		</tr>
 		<tr>

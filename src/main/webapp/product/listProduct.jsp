@@ -19,18 +19,29 @@
 	<!-- CDN(Content Delivery Network) 호스트 사용 -->
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
-	
+		
+		var menu;
 		//=====기존Code 주석 처리 후  jQuery 변경 ======//
 		// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-		function fncGetProductList(currentPage) {
+		function fncGetProductList(currentPage, menu) {
 			//document.getElementById("currentPage").value = currentPage;
 			$("#currentPage").val(currentPage)
 		   	//document.detailForm.submit();
-			$("form").attr("method" , "POST").attr("action" , "/product/listProduct").submit();
+			$("form").attr("method" , "POST").attr("action" , "/product/listProduct?menu="+menu).submit();
 		}
 		//===========================================//
 		//==> 추가된부분 : "검색" ,  prodNo link  Event 연결 및 처리
 		 $(function() {
+			 
+			// 현재 페이지의 URL을 가져옵니다.
+			var url = window.location.search;
+			
+			// URL을 파싱하여 URLSearchParams 객체를 생성합니다.
+			var urlSearchParams = new URLSearchParams(url);
+			
+			// menu 파라미터를 가져옵니다.
+			menu = urlSearchParams.get("menu");
+			alert(menu);
 			 
 			//==> 검색 Event 연결처리부분
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -42,26 +53,14 @@
 			});
 			
 			
-			//==> prodName LINK Event 연결처리
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 3 과 1 방법 조합 : $(".className tagName:filter함수") 사용함.
-			// 현재 페이지의 URL을 가져옵니다.
-			var url = window.location.search;
-			
-			// URL을 파싱하여 URLSearchParams 객체를 생성합니다.
-			var urlSearchParams = new URLSearchParams(url);
-			
-			// menu 파라미터를 가져옵니다.
-			var menu = urlSearchParams.get("menu");
-			console.log(menu);
-			
 			$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
 					//Debug..
 					alert(  $( this ).text().trim() );
+					alert(menu);
 					if(menu === "search"){
-						self.location ="/product/getProduct?prodNo="+$(this).text().trim()+"&menu="+menu;	
+						self.location ="/product/getProduct?prodNo="+$(this).text().trim();
 					} else {
-						self.location ="/product/updateProduct?prodNo="+$(this).text().trim()+"&menu="+menu;
+						self.location ="/product/updateProduct?prodNo="+$(this).text().trim();
 					}
 					
 			});
@@ -92,7 +91,8 @@
 	<!-- 
 	<form name="detailForm" action="/product/listProduct?menu=${param.menu}" method="post">
 	 -->
-	<form name="detailForm">
+	<form name="detailForm" action="/product/listProduct?menu="${param.menu}>
+	<input type="hidden" name="menu" value="${param.menu}"/>
 	<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 		<tr>
 			<td width="15" height="37">

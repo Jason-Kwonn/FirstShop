@@ -30,7 +30,7 @@ $(function() {
 	//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
 	 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
 		//Debug..
-		//alert(  $( "td.ct_btn01:contains('수정')" ).html() );
+		alert(  $( "td.ct_btn01:contains('수정')" ).html() );
 		fncUpdatePurchase();
 	});
 });

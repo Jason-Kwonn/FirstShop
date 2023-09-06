@@ -16,6 +16,7 @@ public class Purchase {
 	private String tranCode; // 0. 판매중 1. 구매완료 2. 배송중 3. 배송완료
 	private int tranNo;
 	private int rowNum;
+	private int purchaseQty;
 	
 	public Purchase(){
 	}
@@ -95,6 +96,14 @@ public class Purchase {
 		this.rowNum = rowNum;
 	}
 
+	public int getPurchaseQty() {
+		return purchaseQty;
+	}
+
+	public void setPurchaseQty(int purchaseQty) {
+		this.purchaseQty = purchaseQty;
+	}
+
 	@Override
 	public String toString() {
 		return "Purchase [buyer=" + buyer + ", dlvyAddr=" + dlvyAddr
@@ -103,6 +112,6 @@ public class Purchase {
 				+ paymentOption + ", purchaseProd=" + purchaseProd
 				+ ", receiverName=" + receiverName + ", receiverPhone="
 				+ receiverPhone + ", tranCode=" + tranCode + ", tranNo="
-				+ tranNo + ", rowNum=" + rowNum + "]";
+				+ tranNo + ", rowNum=" + rowNum + "purchaseQty=" + purchaseQty + "]";
 	}
 }

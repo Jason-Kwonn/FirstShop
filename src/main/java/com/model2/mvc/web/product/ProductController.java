@@ -1,5 +1,6 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -54,14 +56,29 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
-	public String addProduct(@ModelAttribute Product product) throws Exception {
+	public String addProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file) throws Exception {
 		
 		System.out.println("/product/addProduct : POST");
 		// Business Logic
 		
+		
+		if(!file.isEmpty()) {
+			String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
+			File uploadFile = new File(uploadDir, file.getOriginalFilename());
+			file.transferTo(uploadFile);
+			
+			product.setFileName(file.getOriginalFilename());
+			System.out.println(file.getOriginalFilename());
+		} else {
+			System.out.println("404 : File Not Found");
+		}
+		
+		
 		// 날짜 '-' 단위 null String 으로 변경 
 		String tempManuDate = product.getManuDate().replace("-", "");
 		product.setManuDate(tempManuDate);
+		
+		
 				
 		productService.addProduct(product);
 		
@@ -71,7 +88,7 @@ public class ProductController {
 	
 //	@RequestMapping("/getProduct.do")
 	@RequestMapping(value="getProduct")
-	public String getProduct(@RequestParam("prodNo") int prodNo, Model model, @RequestParam("menu") String menu, 
+	public String getProduct(@RequestParam("prodNo") int prodNo, Model model, 
 							HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		System.out.println("/product/getProduct");
@@ -116,7 +133,7 @@ public class ProductController {
 	
 //	@RequestMapping("/listProduct.do")
 	@RequestMapping(value="listProduct")
-	public String getProductList(@RequestParam("menu") String menu, @ModelAttribute("search") Search search, Model model) throws Exception {
+	public String getProductList(@ModelAttribute("search") Search search, Model model) throws Exception {
 		
 		System.out.println("/product/listProduct : GET / POST");
 		
@@ -134,7 +151,6 @@ public class ProductController {
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
-		model.addAttribute("menu", menu);
 		
 		return "forward:/product/listProduct.jsp";
 	}
@@ -161,7 +177,7 @@ public class ProductController {
 		//Business Logic
 		productService.updateProduct(product);
 		
-		return "redirect:/getProduct.do?prodNo="+ product.getProdNo();
+		return "redirect:/product/updateProduct?prodNo="+ product.getProdNo();
 	}
 	
 } // end of class

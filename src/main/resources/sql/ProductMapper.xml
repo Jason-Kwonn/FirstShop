@@ -17,6 +17,7 @@
 		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
 		<result property="rowNum" 		column="row_seq" 			jdbcType="NUMERIC"/>
 		<result property="proTranCode" column="TRAN_STATUS_CODE" jdbcType="CHAR"/>
+		<result property="productQty" 		column="product_quantity" 		jdbcType="INTEGER"/>
 	</resultMap>
 	
 	
@@ -24,15 +25,15 @@
 	<!-- SQL : INSERT -->
 	<insert 	id="addProduct"		parameterType="product" >
 	 	INSERT
-		INTO product( prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date) 
+		INTO product( prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, product_quantity) 
 		VALUES	 (	seq_product_prod_no.nextval , #{prodName} , #{prodDetail:VARCHAR} ,  #{manuDate:VARCHAR} , #{price:INTEGER} , 
-							#{fileName:VARCHAR} , SYSDATE )
+							#{fileName:VARCHAR} , SYSDATE, #{productQty:INTEGER})
 	 </insert>
 	 
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getProduct"	parameterType="int"	resultMap="productSelectMap">
 		SELECT
-		prod_no , prod_name , image_file , prod_detail ,  manufacture_day ,  price , reg_date 		
+		prod_no , prod_name , image_file , prod_detail ,  manufacture_day ,  price , reg_date, product_quantity 		
 		FROM product 
 		WHERE prod_no = #{value}
 	 </select>
@@ -45,7 +46,8 @@
 			prod_detail	= #{prodDetail:VARCHAR},
 			manufacture_day = #{manuDate:VARCHAR} ,
 			price = #{price:INTEGER}, 
-			image_file = #{fileName:VARCHAR}
+			image_file = #{fileName:VARCHAR},
+			product_quantity = #{productQty:INTEGER}
 	   	</set>
 	   	WHERE prod_no = #{prodNo:NUMERIC}
 	 </update>
