@@ -171,10 +171,22 @@ public class ProductController {
 	
 //	@RequestMapping("/updateProduct.do")
 	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("product") Product product, Model model) throws Exception{
+	public String updateProduct(@ModelAttribute("product") Product product,	@RequestParam("file") MultipartFile file) throws Exception{
 		
 		System.out.println("/product/updateProduct : POST");
 		//Business Logic
+		
+		if(!file.isEmpty()) {
+			String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
+			File uploadFile = new File(uploadDir, file.getOriginalFilename());
+			file.transferTo(uploadFile);
+			
+			product.setFileName(file.getOriginalFilename());
+			System.out.println(file.getOriginalFilename());
+		} else {
+			System.out.println("404 : File Not Found");
+		}
+		
 		productService.updateProduct(product);
 		
 		return "redirect:/product/updateProduct?prodNo="+ product.getProdNo();
