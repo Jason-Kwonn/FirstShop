@@ -41,7 +41,7 @@
 			
 			// menu 파라미터를 가져옵니다.
 			menu = urlSearchParams.get("menu");
-			alert(menu);
+			//alert(menu);
 			 
 			//==> 검색 Event 연결처리부분
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)

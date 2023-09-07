@@ -6,6 +6,7 @@ import java.sql.Date;
 public class Product {
 	
 	private String fileName;
+	private String[] fileNames;
 	private String manuDate;
 	private int price;
 	private String prodDetail;
@@ -82,6 +83,14 @@ public class Product {
 
 	public void setProductQty(int productQty) {
 		this.productQty = productQty;
+	}
+
+	public String[] getFileNames() {
+		return fileNames;
+	}
+
+	public void setFileNames(String[] fileNames) {
+		this.fileNames = fileNames;
 	}
 
 	// Override

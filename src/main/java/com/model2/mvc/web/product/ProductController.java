@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,23 +57,33 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
-	public String addProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file) throws Exception {
+	public String addProduct(@ModelAttribute Product product, @RequestParam("files") MultipartFile[] files) throws Exception {
 		
 		System.out.println("/product/addProduct : POST");
 		// Business Logic
+		String resultFileName = "";
 		
-		
-		if(!file.isEmpty()) {
-			String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
-			File uploadFile = new File(uploadDir, file.getOriginalFilename());
-			file.transferTo(uploadFile);
+		for(MultipartFile file : files) {
+			if(!file.isEmpty()) {
+				String realFileName = StringUtils.cleanPath(file.getOriginalFilename());
+				String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
+				File uploadFile = new File(uploadDir, realFileName);
+				file.transferTo(uploadFile);
+				
+				if (!resultFileName.isEmpty()) {
+		            // resultFileName이 비어있지 않으면 ','를 추가
+		            resultFileName += ",";
+		        }
+		        resultFileName += realFileName;
+				
+				product.setFileName(resultFileName);
+				
+				System.out.println("Uploaded file name: " + realFileName);
 			
-			product.setFileName(file.getOriginalFilename());
-			System.out.println(file.getOriginalFilename());
-		} else {
-			System.out.println("404 : File Not Found");
+			} else {
+				System.out.println("404 : File Not Found");
+			}
 		}
-		
 		
 		// 날짜 '-' 단위 null String 으로 변경 
 		String tempManuDate = product.getManuDate().replace("-", "");
@@ -94,6 +105,11 @@ public class ProductController {
 		System.out.println("/product/getProduct");
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
+		
+		String[] fileNames = product.getFileName().split(",");
+		
+		product.setFileNames(fileNames);
+		
 		//Model 과 View 연결
 		model.addAttribute("product", product);
 		
@@ -177,15 +193,20 @@ public class ProductController {
 		//Business Logic
 		
 		if(!file.isEmpty()) {
+			String realFileName = StringUtils.cleanPath(file.getOriginalFilename());
 			String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
-			File uploadFile = new File(uploadDir, file.getOriginalFilename());
+			File uploadFile = new File(uploadDir, realFileName);
 			file.transferTo(uploadFile);
 			
-			product.setFileName(file.getOriginalFilename());
+			product.setFileName(realFileName);
 			System.out.println(file.getOriginalFilename());
 		} else {
 			System.out.println("404 : File Not Found");
 		}
+		
+		// 날짜 '-' 단위 null String 으로 변경 
+		String tempManuDate = product.getManuDate().replace("-", "");
+		product.setManuDate(tempManuDate);
 		
 		productService.updateProduct(product);
 		

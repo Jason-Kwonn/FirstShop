@@ -75,6 +75,13 @@
 				history.go(-1);
 			});
 		});
+		
+		$(function(){
+			////////////추가 부분 ////////////
+			// no-cache class 에 src 뒤에 랜덤한 수를 두어 캐싱을 방지한다.
+			$('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
+			alert(attr('src'));
+		});
 	
 	</script>
 	</head>
@@ -197,7 +204,9 @@
 			<td width="104" class="ct_write">현재이미지</td>
 			<td bgcolor="D6D6D6" width="1"></td>
 			<td class="ct_write01">
-				<img src = "/images/uploadFiles/${product.fileName}"/>
+				<c:forEach var="image" items="${product.fileNames}">
+                	<img class="no-cache" src="../images/uploadFiles/${image}"/>
+            	</c:forEach>
 			</td>
 		</tr>
 		<tr>

@@ -17,7 +17,7 @@
 	<script type="text/javascript">
 	
 		//==> 추가된부분 : "수정" "확인"  Event 연결 및 처리
-		 $(function() {
+		 $(function() {			
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
 			 $( "td.ct_btn01:contains('이전')" ).on("click" , function() {
@@ -31,6 +31,12 @@
 					alert(  $( "td.ct_btn01:contains('구매')" ).html() );
 					self.location = "/purchase/addPurchase?prodNo=${product.prodNo}"
 				});
+		});
+		
+		$(function(){
+			////////////추가 부분 ////////////
+			// no-cache class 에 src 뒤에 랜덤한 수를 두어 캐싱을 방지한다.
+			$('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
 		});
 	
 	</script>
@@ -96,8 +102,9 @@
 			</td>
 			<td bgcolor="D6D6D6" width="1"></td>
 			<td class="ct_write01">
-				<%-- <img src = "/images/uploadFiles/<%=product.getFileName() %>"/> --%>
-				<img src = "/images/uploadFiles/${product.fileName}"/>
+				<c:forEach var="image" items="${product.fileNames}">
+                	<img class="no-cache" src="../images/uploadFiles/${image}"/>
+            	</c:forEach>
 			</td>
 		</tr>
 		<tr>
