@@ -36,7 +36,7 @@
 		$(function(){
 			////////////추가 부분 ////////////
 			// no-cache class 에 src 뒤에 랜덤한 수를 두어 캐싱을 방지한다.
-			$('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
+			$('.no-cache').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
 		});
 	
 	</script>
