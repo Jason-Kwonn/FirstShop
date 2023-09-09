@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
             
     
-    <wb-module deploy-name="09.Model2MVCShop(jQuery)">
+    <wb-module deploy-name="11.Model2MVCShop">
                         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
@@ -16,10 +16,10 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
                         
         
-        <property name="java-output-path" value="/09.Model2MVCShop(jQuery)/build/classes"/>
+        <property name="context-root" value="/"/>
                         
         
-        <property name="context-root" value="/"/>
+        <property name="java-output-path" value="/11.Model2MVCShop/build/classes"/>
                     
     
     </wb-module>
