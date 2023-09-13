@@ -7,7 +7,7 @@ public class Page {
 	///Field
 	private int currentPage;		// 현재페이지
 	private int totalCount;			// 총 게시물 수
-	private int pageUnit;			// 하단 페이지 번호 화면에 보여지는 수
+	private int pageUnit;			// 하단 페이지 번호 화면에 보여지는 수 이나, 무한 스크롤 시에도 활용 가능할 듯.
 	private int pageSize;			// 한 페이지당 보여지는 게시물수
 	private int maxPage;			// 최대 페이지 번호(전체 페이지)
 	private int beginUnitPage;	//화면에 보여지는 페이지 번호의 최소수

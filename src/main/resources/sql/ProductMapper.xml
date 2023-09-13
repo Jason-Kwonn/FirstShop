@@ -34,7 +34,7 @@
 	 <select 	id="getProduct"	parameterType="int"	resultMap="productSelectMap">
 		SELECT
 		prod_no , prod_name , image_file , prod_detail ,  manufacture_day ,  price , reg_date, product_quantity 		
-		FROM product 
+		FROM product
 		WHERE prod_no = #{value}
 	 </select>
 	 
@@ -63,13 +63,13 @@
 											<if test="searchCondition != null">
 												<where>
 													<if test="searchCondition == 0 and searchKeyword !='' ">
-										 				p.prod_no LIKE '%' || #{searchKeyword} || '%'
-													</if>
-													<if test="searchCondition == 1 and searchKeyword !='' ">
 										 				p.prod_name LIKE '%' || #{searchKeyword} || '%'
 													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 				p.price &lt;= #{searchKeyword}
+													</if>
 													<if test="searchCondition == 2 and searchKeyword !='' ">
-										 				p.price = LIKE '%' || #{searchKeyword} || '%'
+										 				p.price &gt;= #{searchKeyword}
 													</if>
 												</where>
 											</if>
@@ -98,13 +98,13 @@
 						<if test="searchCondition != null">
 							<where>
 								<if test="searchCondition == 0 and searchKeyword !='' ">
-					 				p.prod_no LIKE '%' || #{searchKeyword} || '%'
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
 					 				p.prod_name LIKE '%' || #{searchKeyword} || '%'
 								</if>
+								<if test="searchCondition == 1 and searchKeyword !='' ">
+					 				p.price &lt;= #{searchKeyword}
+								</if>
 								<if test="searchCondition == 2 and searchKeyword !='' ">
-					 				p.price LIKE '%' || #{searchKeyword} || '%'
+					 				p.price &gt;= #{searchKeyword}
 								</if>
 							</where>
 						</if> ) countTable						
