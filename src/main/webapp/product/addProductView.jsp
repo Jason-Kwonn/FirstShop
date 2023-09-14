@@ -91,15 +91,15 @@
 		</head>
 
 		<body>
-			<!-- ToolBar Start /////////////////////////////////////
+			<!-- ToolBar Start ///////////////////////////////////// -->
 			<jsp:include page="/layout/toolbar.jsp" />
-			ToolBar End /////////////////////////////////////-->
+			<!-- ToolBar End /////////////////////////////////////-->
 			<!-- ToolBar Start /////////////////////////////////////-->
-			<div class="navbar  navbar-default">
+			<!-- <div class="navbar  navbar-default">
 				<div class="container">
 					<a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a>
 				</div>
-			</div>
+			</div> -->
 			<!-- ToolBar End /////////////////////////////////////-->
 
 			<!-- contents start -->
@@ -145,7 +145,7 @@
 					<div class="form-group">
 						<label for="file" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 						<div class="col-sm-4">
-							<input type="file" class="form-control" id="files" name="files">
+							<input type="file" class="form-control" id="files" name="files" multiple/>
 						</div>
 					</div>
 

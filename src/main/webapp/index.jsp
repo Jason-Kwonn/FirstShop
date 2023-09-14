@@ -49,6 +49,13 @@
 						$("a[href='#' ]:contains('·Î ±× ÀÎ')").on("click", function () {
 							self.location = "/user/login"
 						});
+						
+						$(document).on("keydown", function (e) {
+							if(e.keyCode === 13){
+								self.location = "/user/login"
+							}
+						});
+						
 					});
 				</script>
 

@@ -28,6 +28,13 @@
 						border: 3px solid #D6CDB7;
 						margin-top: 10px;
 					}
+					
+					.thumbnail {
+						width: 100px;
+						height: 100px;
+						object-fit: cover;
+						/* 이미지 비율을 유지하면서 채우기 */
+					}
 				</style>
 
 				<!-- ////////////////////////////// JavaSript ////////////////////////////// -->
@@ -39,13 +46,13 @@
 						//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
 						$("a:contains('이전')").on("click", function () {
 							//Debug..
-							alert($("a:contains('이전')").html());
+							//alert($("a:contains('이전')").html());
 							history.go(-1);
 						});
 
-						$("button.btn btn-primary:contains('구매')").on("click", function () {
+						$("button.btn.btn-primary:contains('구매')").on("click", function () {
 							//Debug..
-							alert($("button.btn btn-primary:contains('구매')").html());
+							//alert($("button.btn.btn-primary:contains('구매')").html());
 							self.location = "/purchase/addPurchase?prodNo=${product.prodNo}"
 						});
 					});
@@ -122,7 +129,8 @@
 							<c:choose>
 								<c:when test="${ ! empty product.fileNames}">
 									<c:forEach var="image" items="${product.fileNames}">
-										<img class="no-cache" src="../images/uploadFiles/${image}" />
+										<img src="/images/uploadFiles/${image}"
+											class="img-thumbnail thumbnail" />
 									</c:forEach>
 								</c:when>
 								<c:otherwise>

@@ -83,13 +83,12 @@
 					// 상품정보 확인 (img, 상품명 click)
 					$(function(){
 						$(document).on("click", "td[title='Click : 상품정보 확인'], td:nth-child(3)", function () {
-							var stockStatus = $(this).siblings(".stock").text();
-							if(stockStatus === "판매중") {
-								console.log("TD clicked");  // 이 로그가 출력되는지 확인
-								var prodNo = $(this).siblings().find("input[type='hidden']").val();
-								console.log("Prod No: ", prodNo);  // prodNo 값이 올바른지 확인
-								self.location = "/product/getProduct?prodNo=" + prodNo;
-							}
+						
+							console.log("TD clicked");  // 이 로그가 출력되는지 확인
+							var prodNo = $(this).siblings().find("input[type='hidden']").val();
+							console.log("Prod No: ", prodNo);  // prodNo 값이 올바른지 확인
+							self.location = "/product/updateProduct?prodNo=" + prodNo;
+						
 						});
 					});
 
@@ -283,7 +282,7 @@
 											class="img-thumbnail thumbnail" />
 									</td>
 									<td align="left">${product.prodName}</td>
-									<td align="left" class="stock">${product.stock}</td>
+									<td align="left" class="productQty">${product.productQty}</td>
 									<td align="left">
 										<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
 										<input type="hidden" value="${product.prodNo}">

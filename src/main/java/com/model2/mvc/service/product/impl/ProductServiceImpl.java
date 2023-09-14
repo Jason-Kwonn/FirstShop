@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
 		int totalCount = productDao.getTotalCount(search);
 		
 		for(Product product : list) {
-			// 재고 유무 확인
+			// 재고 유무 확인 세팅
 			if (product.getProductQty() == 0) {
 				product.setStock("매진");
 			} else {

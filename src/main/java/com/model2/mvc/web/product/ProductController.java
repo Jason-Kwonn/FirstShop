@@ -70,7 +70,7 @@ public class ProductController {
 		for(MultipartFile file : files) {
 			if(!file.isEmpty()) {
 				String realFileName = StringUtils.cleanPath(file.getOriginalFilename());
-				String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
+				String uploadDir = "/Users/soonjaekwon/miniproject/11.Model2MVCShop/src/main/webapp/images/uploadFiles/";
 				File uploadFile = new File(uploadDir, realFileName);
 				file.transferTo(uploadFile);
 				
@@ -173,6 +173,29 @@ public class ProductController {
 		model.addAttribute("search", search);
 		
 		return "forward:/product/listProduct.jsp";
+	}
+	
+	@RequestMapping(value="listSellingProduct")
+	public String getSellingProductList(@ModelAttribute("search") Search search, Model model) throws Exception {
+		
+		System.out.println("/product/listSellingProduct : GET / POST");
+		
+		if(search.getCurrentPage() == 0) {
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		//Business Logic 수행 
+		Map<String, Object> map = productService.getProductList(search);
+		
+		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);
+		
+		//Model 과 View 연결 
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("resultPage", resultPage);
+		model.addAttribute("search", search);
+		
+		return "forward:/product/listSellingProduct.jsp";
 	}
 	
 //	@RequestMapping("/updateProductView.do")

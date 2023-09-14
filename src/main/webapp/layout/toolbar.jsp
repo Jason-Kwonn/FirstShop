@@ -139,9 +139,16 @@
 
 					$("a:contains('판매상품등록')").on("click", function () {
 						//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-						alert("request??")
+						//alert("request??")
 						$(self.location).attr("href", "/product/addProduct");
 						// window.location.href = "/product/addProductView";
+					});
+					
+					$("a[href='#' ]:contains('판매상품관리')").on("click", function () {
+						//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+						// alert("request??")
+						self.location = "/product/listSellingProduct";
+
 					});
 
 					$("a[href='#' ]:contains('상품검색')").on("click", function () {
@@ -150,6 +157,7 @@
 						self.location = "/product/listProduct";
 
 					});
+					
 				});
 
 			</script>
