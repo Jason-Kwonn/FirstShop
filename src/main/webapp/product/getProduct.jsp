@@ -89,7 +89,7 @@
 					<hr />
 
 					<div class="row">
-						<div class="col-xs-4 col-md-2 "><strong>상품 상세정보</strong></div>
+						<div class="col-xs-4 col-md-2 "><strong>상세정보</strong></div>
 						<div class="col-xs-8 col-md-4">${product.prodDetail}</div>
 					</div>
 

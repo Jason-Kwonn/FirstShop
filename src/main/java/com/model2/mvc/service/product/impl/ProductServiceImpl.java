@@ -43,18 +43,22 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> list = productDao.getProductList(search);
 		int totalCount = productDao.getTotalCount(search);
 		
-		//tranCode 변환
-		for (Product product : list) {
-		
-			if(product.getProTranCode() == null || product.getProTranCode().trim().equals("0")){
-				product.setProTranCode("판매중");
-			} else if(product.getProTranCode().trim().equals("1")){
-				product.setProTranCode("구매완료");
-			} else if(product.getProTranCode().trim().equals("2")){
-				product.setProTranCode("배송중");
-			} else if(product.getProTranCode().trim().equals("3")){
-				product.setProTranCode("배송완료");
+		for(Product product : list) {
+			// 재고 유무 확인
+			if (product.getProductQty() == 0) {
+				product.setStock("매진");
+			} else {
+				product.setStock("판매중");
 			}
+			
+			String fileName = product.getFileName();
+			
+			if (fileName.contains(",")) {
+				product.setFileName(fileName.substring(0, fileName.indexOf(",")));
+			} else {
+				product.setFileName(fileName);
+			}
+			
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -62,6 +66,20 @@ public class ProductServiceImpl implements ProductService {
 		map.put("totalCount", new Integer(totalCount));
 		
 		return map;
+		
+		//tranCode 변환 / 배송관리 페이지 분할 예정으로 주석 처리 
+//		for (Product product : list) {
+//		
+//			if(product.getProTranCode() == null || product.getProTranCode().trim().equals("0")){
+//				product.setProTranCode("판매중");
+//			} else if(product.getProTranCode().trim().equals("1")){
+//				product.setProTranCode("구매완료");
+//			} else if(product.getProTranCode().trim().equals("2")){
+//				product.setProTranCode("배송중");
+//			} else if(product.getProTranCode().trim().equals("3")){
+//				product.setProTranCode("배송완료");
+//			}
+//		}
 	}
 
 	@Override

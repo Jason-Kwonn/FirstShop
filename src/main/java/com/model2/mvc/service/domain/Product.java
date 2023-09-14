@@ -16,6 +16,7 @@ public class Product {
 	private String proTranCode;
 	private int rowNum;
 	private int productQty; //상품 재고 수량
+	private String stock; // 재고 현황, 재입고 상황 등
 	
 	public Product(){
 	}
@@ -32,6 +33,14 @@ public class Product {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	public String[] getFileNames() {
+		return fileNames;
+	}
+
+	public void setFileNames(String[] fileNames) {
+		this.fileNames = fileNames;
+	}
+
 	public String getManuDate() {
 		return manuDate;
 	}
@@ -85,18 +94,18 @@ public class Product {
 		this.productQty = productQty;
 	}
 
-	public String[] getFileNames() {
-		return fileNames;
+	public String getStock() {
+		return stock;
 	}
 
-	public void setFileNames(String[] fileNames) {
-		this.fileNames = fileNames;
+	public void setStock(String stock) {
+		this.stock = stock;
 	}
 
 	// Override
 	public String toString() {
-		return "ProductVO : [fileName]" + fileName
+		return "Product : [fileName]" + fileName
 				+ "[manuDate]" + manuDate+ "[price]" + price + "[prodDetail]" + prodDetail
-				+ "[prodName]" + prodName + "[prodNo]" + prodNo + "[productQty]" + productQty;
+				+ "[prodName]" + prodName + "[prodNo]" + prodNo + "[productQty]" + productQty + "[stock]" + stock;
 	}	
 }

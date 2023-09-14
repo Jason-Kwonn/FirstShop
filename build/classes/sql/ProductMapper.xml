@@ -56,7 +56,7 @@
 	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT p.prod_no, p.prod_name, p.price, p.reg_date, t.tran_status_code
+	  					FROM		(	SELECT p.prod_no, p.prod_name, p.price, p.image_file, p.prod_detail, p.product_quantity, t.tran_status_code
 										FROM product p
 										LEFT OUTER JOIN transaction t
 										ON p.prod_no = t.prod_no 
@@ -74,8 +74,8 @@
 												</where>
 											</if>
 											ORDER BY prod_no ) inner_table
-						WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+						<!-- WHERE ROWNUM &lt;= #{endRowNum} --> )
+		<!-- WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} --> 
 	 </select>
 	 	<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
@@ -91,7 +91,7 @@
 	<!-- SQL : SELECT ROW Count -->	 
 	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT p.prod_no, p.prod_name, p.price, p.reg_date, t.tran_status_code
+	  	FROM(	SELECT p.prod_no, p.prod_name, p.price, p.image_file, p.prod_detail, p.product_quantity, t.tran_status_code
 						FROM product p
 						LEFT OUTER JOIN transaction t
 						ON p.prod_no = t.prod_no 

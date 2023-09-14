@@ -91,15 +91,15 @@
 		</head>
 
 		<body>
-			<!-- ToolBar Start /////////////////////////////////////-->
+			<!-- ToolBar Start /////////////////////////////////////
 			<jsp:include page="/layout/toolbar.jsp" />
-			<!-- ToolBar End /////////////////////////////////////-->
+			ToolBar End /////////////////////////////////////-->
 			<!-- ToolBar Start /////////////////////////////////////-->
-			<!-- <div class="navbar  navbar-default">
+			<div class="navbar  navbar-default">
 				<div class="container">
 					<a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a>
 				</div>
-			</div> -->
+			</div>
 			<!-- ToolBar End /////////////////////////////////////-->
 
 			<!-- contents start -->
