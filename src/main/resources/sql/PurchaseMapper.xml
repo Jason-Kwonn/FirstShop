@@ -19,6 +19,7 @@
 		<result property="dlvyDate" column="dlvy_date" jdbcType="VARCHAR"/>
 		<result property="dlvyDate" column="dlvy_date" jdbcType="VARCHAR"/>
 		<result property="rowNum" 	column="row_seq" 	jdbcType="NUMERIC"/>
+		<result property="purchasetQty" 		column="purchase_quantity" 		jdbcType="INTEGER"/>
 		
 		<association property="purchaseProd"  javaType="product">
 			<id property="prodNo" column="prod_no" jdbcType="NUMERIC"/>
@@ -59,7 +60,8 @@
 			dlvy_request,
 			tran_status_code,
 			order_date,
-			dlvy_date
+			dlvy_date,
+			purchase_quantity
 		) 
 		VALUES (
 			seq_transaction_tran_no.nextval,
@@ -72,7 +74,8 @@
 			#{dlvyRequest:VARCHAR},
 			#{tranCode:CHAR},
 			SYSDATE,
-			#{dlvyDate:DATE}
+			#{dlvyDate:DATE},
+			#{purchaseQty:INTEGER}
 		)
 		
 	</insert>
@@ -178,7 +181,8 @@
 			receiver_phone = #{receiverPhone:VARCHAR}, 
 			dlvy_addr = #{dlvyAddr:VARCHAR}, 
 			dlvy_request = #{dlvyRequest:VARCHAR}, 
-			dlvy_date = #{dlvyDate:DATE}
+			dlvy_date = #{dlvyDate:DATE},
+			purchase_quantity = #{purchaseQty:INTEGER}
 		</set>
 		WHERE tran_no = #{tranNo:NUMERIC}
 	</update>
@@ -216,6 +220,7 @@
 				t.tran_status_code tranCode,
 				t.order_date orderDate,
 				TO_CHAR(t.dlvy_date, 'YYYY-MM-DD') dlvyDate,
+				t.purchase_quantity purchaseQty,
 				u.user_id userId
 				FROM transaction t, users u
 				WHERE t.buyer_id = u.user_id

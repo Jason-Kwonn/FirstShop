@@ -24,11 +24,15 @@
 
 				<!--  ///////////////////////// CSS ////////////////////////// -->
 				<style>
+					body {
+						padding-top: 50px;
+					}
+
 					body>div.container {
 						border: 3px solid #D6CDB7;
 						margin-top: 10px;
 					}
-					
+
 					.thumbnail {
 						width: 100px;
 						height: 100px;
@@ -129,8 +133,7 @@
 							<c:choose>
 								<c:when test="${ ! empty product.fileNames}">
 									<c:forEach var="image" items="${product.fileNames}">
-										<img src="/images/uploadFiles/${image}"
-											class="img-thumbnail thumbnail" />
+										<img src="/images/uploadFiles/${image}" class="img-thumbnail thumbnail" />
 									</c:forEach>
 								</c:when>
 								<c:otherwise>

@@ -20,6 +20,10 @@
 
 			<!--  ///////////////////////// CSS ////////////////////////// -->
 			<style>
+				body {
+					padding-top: 50px;
+				}
+
 				body>div.container {
 					border: 3px solid #D6CDB7;
 					margin-top: 10px;
@@ -44,7 +48,7 @@
 				//============= "취소"  Event 처리 및  연결 =============
 				$(function () {
 					//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-					$("a[href='#' ].contains('취소')").on("click", function () {
+					$("a[href='#' ]:contains('취소')").on("click", function () {
 						$("form")[0].reset();
 					});
 				});
@@ -145,7 +149,7 @@
 					<div class="form-group">
 						<label for="file" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 						<div class="col-sm-4">
-							<input type="file" class="form-control" id="files" name="files" multiple/>
+							<input type="file" class="form-control" id="files" name="files" multiple />
 						</div>
 					</div>
 

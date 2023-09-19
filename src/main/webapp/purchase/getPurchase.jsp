@@ -1,195 +1,189 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page pageEncoding="EUC-KR"%>
+	<%@ page pageEncoding="EUC-KR" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="EUC-KR">
-	<title>구매 상세조회</title>
-	<link rel="stylesheet" href="/css/admin.css" type="text/css">
-	
-	<!-- CDN(Content Delivery Network) 호스트 사용 -->
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript">
-		//==> 추가된부분 : "수정" "확인"  Event 연결 및 처리
-		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			 $( "td.ct_btn01:contains('확인')" ).on("click" , function() {
-				//Debug..
-				alert(  $( "td.ct_btn01:contains('확인')" ).html() );
-				history.go(-1);
-			});
-			
-			 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
-					//Debug..
-					alert(  $( "td.ct_btn01:contains('수정')" ).html() );
-					self.location = "/purchase/updatePurchase?tranNo=${purchase.tranNo}"
-				});
-		});
-	
-	
-	</script>
-	
-	</head>
+			<!DOCTYPE html>
+			<html>
 
-<body bgcolor="#ffffff" text="#000000">
+			<head>
+				<meta charset="EUC-KR">
 
-<table width="100%" height="37" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td width="15" height="37">
-			<img src="/images/ct_ttl_img01.gif"	width="15" height="37"/>
-		</td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="93%" class="ct_ttl01">구매 상세조회</td>
-					<td width="20%" align="right">&nbsp;</td>
-				</tr>
-			</table>
-		</td>
-		<td width="12" height="37">
-			<img src="/images/ct_ttl_img03.gif"	width="12" height="37"/>
-		</td>
-	</tr>
-</table>
+				<title>구매 정보조회</title>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 13px;">
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			물품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="105">
-					    ${purchase.purchaseProd.prodNo}
-					</td>
-					<td></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			구매자 아이디 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.buyer.userId}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
+				<!-- 참조 : http://getbootstrap.com/css/   참조 -->
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<tr>
-		<td width="104" class="ct_write">구매 방법</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			${purchase.paymentOption}
-		</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">받는 분 이름</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.receiverName}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">받는 분 연락처</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.receiverPhone}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">배송지</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.dlvyAddr}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">배송 요청사항</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.dlvyRequest}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">배송 희망일</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.dlvyDate}</td>
-	</tr>
+				<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+				<link rel="stylesheet"
+					href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+				<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
+				<!--  ///////////////////////// CSS ////////////////////////// -->
+				<style>
+					body {
+						padding-top: 50px;
+					}
 
-	<tr>
-		<td width="104" class="ct_write">주문일</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${purchase.orderDate}</td>
-	</tr>
+					body>div.container {
+						border: 3px solid #D6CDB7;
+						margin-top: 10px;
+					}
 
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	
-</table>
+					.thumbnail {
+						width: 100px;
+						height: 100px;
+						object-fit: cover;
+						/* 이미지 비율을 유지하면서 채우기 */
+					}
+				</style>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
-	<tr>
-		<td width="53%"></td>
-		<td align="right">
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="17" height="23">
-						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-					</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<!-- 
-						<a href="/purchase/updatePurchase?tranNo=${purchase.tranNo}">수정</a>
-						 -->
-						수정
-					</td>
-					<td width="14" height="23">
-						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
-					</td>
-					<td width="30"></td>
-					<td width="17" height="23">
-						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-					</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	style="padding-top: 3px;">
-						<!-- 
-						<a href="javascript:history.go(-1);">확인</a>
-						 -->
-						확인
-					</td>
-					<td width="14" height="23">
-						<img src="/images/ct_btnbg03.gif"width="14" height="23"/>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+				<!-- ////////////////////////////// JavaSript ////////////////////////////// -->
+				<script type="text/javascript">
 
-</body>
-</html>
+					//==> 추가된부분 : "수정" "확인"  Event 연결 및 처리
+					$(function () {
+						//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+						//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
+						$("a:contains('이전')").on("click", function () {
+							//Debug..
+							//alert($("a:contains('이전')").html());
+							history.go(-1);
+						});
+
+						$("button.btn.btn-primary:contains('수정')").on("click", function () {
+							//Debug..
+							//alert($("button.btn.btn-primary:contains('구매')").html());
+							self.location = "/purchase/updatePurchase?prodNo=${product.prodNo}"
+						});
+					});
+
+				</script>
+
+			</head>
+
+			<body>
+
+				<!-- ToolBar Start /////////////////////////////////////-->
+				<jsp:include page="/layout/toolbar.jsp" />
+				<!-- ToolBar End /////////////////////////////////////-->
+
+				<!--  화면구성 div Start /////////////////////////////////////-->
+				<div class="container">
+
+					<div class="page-header">
+						<h3 class="text-info">구매 정보조회</h3>
+						<h5 class="text-muted">상세 정보는 <strong class="text-danger">다음과 같습니다.</strong></h5>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>구매 아이디</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.buyer.userId}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2"><strong>상품번호</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodNo}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>상품명</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodName}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>상품 이미지</strong></div>
+						<div class="col-xs-8 col-md-4">
+							<c:choose>
+								<c:when test="${ ! empty product.fileNames}">
+									<c:forEach var="image" items="${product.fileNames}">
+										<img src="/images/uploadFiles/${image}" class="img-thumbnail thumbnail" />
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<!-- 공백을 표시하거나 아무 것도 하지 않음 -->
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>가격</strong></div>
+						<div class="col-xs-8 col-md-4">${product.price}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>구매 수량</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.purchaseQty} </div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2"><strong>최종 구매가</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.price}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>구매 방법</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.paymentOption}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>받는 분 이름</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.receiverName}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>받는 분 연락처</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.receiverPhone}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>배송지 주소</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.dlvyAddr}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>배송 요청사항</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.dlvyRequest}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>배송 희망일</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.dlvyDate}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-xs-4 col-md-2 "><strong>주문 일자</strong></div>
+						<div class="col-xs-8 col-md-4">${purchase.orderDate}</div>
+					</div>
+					<hr />
+
+					<div class="row">
+						<div class="col-md-12 text-center ">
+							<button type="button" class="btn btn-primary" href="#">수정</button>
+							<a class="btn btn-primary" href="#" role="button">이전</a>
+						</div>
+					</div>
+
+					<br>
+					<br>
+				</div>
+				<!--  화면구성 div end /////////////////////////////////////-->
+			</body>
+
+			</html>

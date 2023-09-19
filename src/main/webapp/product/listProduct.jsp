@@ -9,13 +9,7 @@
 			<head>
 				<meta charset="EUC-KR">
 				<title>
-					<%-- <c:if test="${param.menu eq 'manage' }">
-						상품 관리
-						</c:if>
-						<c:if test="${param.menu eq 'search' }">
-							상품 검색
-						</c:if>--%>
-						상품 검색
+					상품 검색
 				</title>
 				<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -81,10 +75,10 @@
 					});
 
 					// 상품정보 확인 (img, 상품명 click)
-					$(function(){
+					$(function () {
 						$(document).on("click", "td[title='Click : 상품정보 확인'], td:nth-child(3)", function () {
 							var stockStatus = $(this).siblings(".stock").text();
-							if(stockStatus === "판매중") {
+							if (stockStatus === "판매중") {
 								console.log("TD clicked");  // 이 로그가 출력되는지 확인
 								var prodNo = $(this).siblings().find("input[type='hidden']").val();
 								console.log("Prod No: ", prodNo);  // prodNo 값이 올바른지 확인
@@ -93,11 +87,11 @@
 						});
 					});
 
-					
-					
+
+
 					$(function () {
 						//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-						$(document).on("click", "td:nth-child(5) > i", function () {
+						$(document).on("click", "td:nth-child(6) > i", function () {
 
 							var prodNo = $(this).next().val();
 							console.log("Prod No: ", prodNo);
@@ -112,7 +106,7 @@
 										"Content-Type": "application/json"
 									},
 									success: function (JSONData, status) {
-										
+
 										console.log("AJAX Success: ", JSONData);
 
 										var displayValue = "<h6>"
@@ -126,14 +120,14 @@
 										$("#" + prodNo + "").html(displayValue);
 									},
 									error: function (xhr, status, error) {
-									    console.log("AJAX Error: ", error);
+										console.log("AJAX Error: ", error);
 									}
 								});
 							////////////////////////////////////////////////////////////////////////////////////////////
 
 
 						});
-						
+
 					});
 
 
@@ -162,11 +156,11 @@
 							url: "/product/json/listProduct",
 							method: "POST",
 							data: JSON.stringify({
-								currentPage : currentPage + 1,
-								pageSize : 5,
-								searchCondition : $("select[name='searchCondition']").val(),
-								searchKeyword : $("input[name='searchKryword']").val()
-								
+								currentPage: currentPage + 1,
+								pageSize: 5,
+								searchCondition: $("select[name='searchCondition']").val(),
+								searchKeyword: $("input[name='searchKryword']").val()
+
 							}),
 							dataType: "json",
 							headers: {
@@ -182,7 +176,7 @@
 									+ "<td align='center'>" + iValue + "</td>"
 									+ "<td align='left' title='Click : 상품정보 확인'>" + JSONData.fileNames + "</td>"
 									+ "<td align='left'>" + JSONData.prodName + "</td>"
-									+ "<td align='left'>" + JSONData.isStock + "</td>"
+									+ "<td align='left'>" + JSONData.stock + "</td>"
 									+ "<td align='center'>"
 									+ "<i class='glyphicon glyphicon-ok' id='" + JSONData.prodNo + "'></i>"
 									+ "<input type='hidden' value='" + JSONData.prodNo + "'>"
@@ -197,7 +191,6 @@
 			</head>
 
 			<body>
-
 				<!-- ToolBar Start /////////////////////////////////////-->
 				<jsp:include page="/layout/toolbar.jsp" />
 				<!-- ToolBar End /////////////////////////////////////-->
@@ -207,12 +200,7 @@
 
 					<div class="page-header text-info">
 						<h3>
-							<c:if test="${param.menu eq 'manage' }">
-								상품 관리
-							</c:if>
-							<c:if test="${param.menu eq 'search' }">
-								상품 검색
-							</c:if>
+							상품 검색
 						</h3>
 					</div>
 
@@ -266,6 +254,7 @@
 								<th align="center">No</th>
 								<th align="center">이미지</th>
 								<th align="center">상품명</th>
+								<th align="center">가격</th>
 								<th align="center">재고유무</th>
 								<th align="center">간략정보</th>
 							</tr>
@@ -283,6 +272,7 @@
 											class="img-thumbnail thumbnail" />
 									</td>
 									<td align="left">${product.prodName}</td>
+									<td align="left">${product.price}</td>
 									<td align="left" class="stock">${product.stock}</td>
 									<td align="left">
 										<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
