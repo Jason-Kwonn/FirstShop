@@ -115,7 +115,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="purchaseQty" class="col-sm-offset-1 col-sm-3 control-label">수량</label>
+							<label for="purchaseQty" class="col-sm-offset-1 col-sm-3 control-label">구매 수량</label>
 							<div class="col-sm-4">
 								<input type="text" class="form-control" id="purchaseQty" name="purchaseQty"
 									value="${purchase.purchaseQty}" placeholder="구매 수량">

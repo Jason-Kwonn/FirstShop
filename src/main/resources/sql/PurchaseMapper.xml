@@ -132,17 +132,17 @@
 	 -->
 		
 	<select id="getPurchaseList" parameterType="search" resultMap="purchaseSelectMap">
-			SELECT * 
-			FROM (
+			<!-- SELECT * 
+			FROM ( 
 				SELECT inner_table.*, ROWNUM AS row_seq
-				FROM (
+				FROM (-->
 				    SELECT 
-				    ROWNUM, t.*, u.* 
+				    <!-- ROWNUM, --> t.*, u.* 
 				    FROM transaction t, users u 
 				    WHERE t.buyer_id = u.user_id 
-				) inner_table 
+				<!-- ) inner_table 
 				WHERE ROWNUM &lt;= #{endRowNum})
-		    WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+		    WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} -->
 	</select>	
 	
 	<!-- 

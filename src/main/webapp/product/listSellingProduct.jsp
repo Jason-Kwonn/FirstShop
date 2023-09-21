@@ -199,7 +199,7 @@
 
 					<div class="page-header text-info">
 						<h3>
-							상품 검색
+							판매 상품 관리
 						</h3>
 					</div>
 

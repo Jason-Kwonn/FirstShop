@@ -203,8 +203,13 @@ public class ProductController {
 	public String updateProductView(@ModelAttribute("prodNo") int prodNo, Model model) throws Exception {
 		
 		System.out.println("/product/updateProduct : GET");
+		
 		//Business Logic
 		Product product = productService.getProduct(prodNo);
+		
+		String[] fileNames = product.getFileName().split(",");
+		product.setFileNames(fileNames);
+		
 		//Model 과 View 연결 
 		model.addAttribute("product", product);
 		
@@ -214,21 +219,31 @@ public class ProductController {
 	
 //	@RequestMapping("/updateProduct.do")
 	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("product") Product product,	@RequestParam("file") MultipartFile file) throws Exception{
+	public String updateProduct(@ModelAttribute("product") Product product,	@RequestParam("files") MultipartFile[] files) throws Exception{
 		
 		System.out.println("/product/updateProduct : POST");
-		//Business Logic
+		String resultFileName = "";
 		
-		if(!file.isEmpty()) {
-			String realFileName = StringUtils.cleanPath(file.getOriginalFilename());
-			String uploadDir = "/Users/soonjaekwon/miniproject/09.Model2MVCShop(jQuery)/src/main/webapp/images/uploadFiles/";
-			File uploadFile = new File(uploadDir, realFileName);
-			file.transferTo(uploadFile);
+		for(MultipartFile file : files) {
+			if(!file.isEmpty()) {
+				String realFileName = StringUtils.cleanPath(file.getOriginalFilename());
+				String uploadDir = "/Users/soonjaekwon/miniproject/11.Model2MVCShop/src/main/webapp/images/uploadFiles/";
+				File uploadFile = new File(uploadDir, realFileName);
+				file.transferTo(uploadFile);
+				
+				if (!resultFileName.isEmpty()) {
+		            // resultFileName이 비어있지 않으면 ','를 추가
+		            resultFileName += ",";
+		        }
+		        resultFileName += realFileName;
+				
+				product.setFileName(resultFileName);
+				
+				System.out.println("Uploaded file name: " + realFileName);
 			
-			product.setFileName(realFileName);
-			System.out.println(file.getOriginalFilename());
-		} else {
-			System.out.println("404 : File Not Found");
+			} else {
+				System.out.println("404 : File Not Found");
+			}
 		}
 		
 		// 날짜 '-' 단위 null String 으로 변경 

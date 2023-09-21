@@ -38,6 +38,30 @@
 		WHERE prod_no = #{value}
 	 </select>
 	 
+	 <!-- SQL : SELECT LIST -->
+	 <select 	id="queryProductList"	parameterType="search"	resultMap="productSelectMap">
+		SELECT
+		prod_name, price 
+		FROM product
+		<where>
+			<!-- 0 : 상품명 -->
+			<if test="searchCondition == 0 and searchKeyword !='' ">
+			prod_name LIKE '%' || #{prodName} || '%'
+			</if>
+			<!-- 1 : n 원 이하인 상품 -->
+			<if test="searchCondition == 1 and searchKeyword !='' ">
+ 				price &lt;= #{searchKeyword}
+			</if>
+			<!-- 1 : n 원 이상인 상품 -->
+			<if test="searchCondition == 2 and searchKeyword !='' ">
+ 				price &gt;= #{searchKeyword}
+			</if>
+		
+		</where>
+		
+	 </select>
+	 
+	 
 	 <!-- SQL : UPDATE -->
 	 <update	id="updateProduct"	parameterType="product" >
 	   	UPDATE product
@@ -54,9 +78,9 @@
 	
 	<!-- SQL : SELECT LIST -->
 	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
-	  	SELECT *
+	  	<!-- SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT p.prod_no, p.prod_name, p.price, p.image_file, p.prod_detail, p.product_quantity, t.tran_status_code
+	  					FROM		( -->	SELECT * FROM (SELECT ROWNUM AS rn, p.prod_no, p.prod_name, p.price, p.image_file, p.prod_detail, p.product_quantity, t.tran_status_code
 										FROM product p
 										LEFT OUTER JOIN transaction t
 										ON p.prod_no = t.prod_no 
@@ -73,9 +97,9 @@
 													</if>
 												</where>
 											</if>
-											ORDER BY prod_no ) inner_table
-						<!-- WHERE ROWNUM &lt;= #{endRowNum} --> )
-		<!-- WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} --> 
+											ORDER BY prod_no) <!-- ) inner_table -->
+						<!-- WHERE ROWNUM &lt;= #{endRowNum}) -->
+		WHERE rn BETWEEN #{startRowNum} AND #{endRowNum} 
 	 </select>
 	 	<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는

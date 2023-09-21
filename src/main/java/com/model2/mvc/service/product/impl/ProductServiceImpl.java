@@ -87,4 +87,9 @@ public class ProductServiceImpl implements ProductService {
 		productDao.updateProduct(product);
 	}
 
+	@Override
+	public List<Product> queryProductList(Search search) throws Exception {
+		return productDao.queryProductList(search);
+	}
+
 }

@@ -17,6 +17,9 @@ public interface ProductDao {
 
 	// SELECT LIST
 	public List<Product> getProductList(Search search) throws Exception ;
+	
+	// SELECT LIST
+	public List<Product> queryProductList(Search search) throws Exception ;
 
 	// UPDATE
 	public void updateProduct(Product product) throws Exception ;

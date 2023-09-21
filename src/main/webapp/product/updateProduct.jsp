@@ -29,6 +29,14 @@
 						border: 3px solid #D6CDB7;
 						margin-top: 10px;
 					}
+
+					.thumbnail {
+						width: 100px;
+						height: 100px;
+						object-fit: cover;
+						/* 이미지 비율을 유지하면서 채우기 */
+						
+					}
 				</style>
 
 				<script type="text/javascript" src="../javascript/calendar.js">
@@ -160,19 +168,25 @@
 						</div>
 
 						<div class="form-group">
-							<label for="file" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
+							<label for="files" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 							<div class="col-sm-4">
-								<input type="file" class="form-control" id="files" name="files">
+								<input type="file" class="form-control" id="files" name="files" multiple />
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="file" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
-							<div class="col-sm-12">
+							<label for="file" class="col-sm-offset-1 col-sm-3 control-label">현재이미지</label>
+							<div class="col-xs-6 col-md-3">
 								<c:choose>
 									<c:when test="${ ! empty product.fileNames}">
 										<c:forEach var="image" items="${product.fileNames}">
-											<img class="no-cache" src="../images/uploadFiles/${image}" />
+											<div class="row">
+												<div class="col-xs-6 col-md-3 d-flex justify-content-center align-items-center">
+													<a href="#" class="thumbnail">
+														<img src="../images/uploadFiles/${image}" />
+													</a>
+												</div>
+											</div>
 										</c:forEach>
 									</c:when>
 									<c:otherwise>

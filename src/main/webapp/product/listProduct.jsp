@@ -20,6 +20,7 @@
 					href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 				<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+				
 
 
 				<!-- Bootstrap Dropdown Hover CSS -->
@@ -41,11 +42,17 @@
 					}
 
 					.thumbnail {
-						width: 100px;
-						height: 100px;
+						width: 120px;
+						height: 120px;
 						object-fit: cover;
 						/* 이미지 비율을 유지하면서 채우기 */
 					}
+					
+					td {
+					    vertical-align: middle;
+					   	align: center;
+					}
+					
 				</style>
 
 				<!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -129,64 +136,87 @@
 						});
 
 					});
+					
+					
 
+					$(document).ready(function() {
+					    let currentPage = 1;
+					    let totalCount = 0;
+					    let globalIndex = 0;
+					    
+						
+					 	// 초기 데이터 로드
+					    loadData(currentPage);
+						
+						// 스크롤 이벤트 추가
+					    $(window).on('scroll', function() {
+					        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+					            currentPage++; // 페이지 증가
+					            loadData(currentPage); // 새로운 데이터 로드
+					        }
+					    });
+						
+					 	/* // 검색 조건이나 검색 키워드가 변경되면
+					    $('select[name="searchCondition"], #searchKeyword').change(function() {
+					        currentPage = 1; // 페이지를 1로 초기화
+					        $('#productList').empty(); // 기존 리스트를 비움
+					        loadData(currentPage); // 새로운 데이터 로드
+					    }); */
+					    
+					    function loadData(page) {
+					        $.ajax({
+					            url: "/product/json/listProduct",
+					            type: 'GET',
+					            dataType: "json",
+								headers: {
+									"Accept": "application/json",
+									"Content-Type": "application/json"
+								},
+					            data: {
+					                currentPage: page,
+					                searchCondition: $('select[name="searchCondition"]').val(),
+					                searchKeyword: $('#searchKeyword').val()
+					            },
+					            success: function(JSONData) {
+					                if (JSONData && JSONData.list) {
+					                    let products = JSONData.list;
+					                    totalCount = JSONData.totalCount;
+					                    let currentCount = $("#productList tr").length;
+					                   	console.log(products);
 
+					                    if (currentCount >= totalCount) {
+					                        $(window).off('scroll'); // 스크롤 이벤트 제거
+					                        return;
+					                    }
 
-					// 무한 스크롤을 위한 로직 구현
-					// 초기값 설정
-					var isLoading = false; // 데이터가 로딩 중인지 확인.
+					                    products.forEach(function(product) {
+					                    	
+					                    	globalIndex++;
+					                    	
+					                        $('#productList').append(
+					                            "<tr>"
+					                                +"<td>" + globalIndex + "</td>"
+					                                +"<td><img src='/images/uploadFiles/" + product.fileName + "' class='img-thumbnail thumbnail' /></td>"
+					                                +"<td>" + product.prodName + "</td>"
+					                                +"<td>" + product.price + "</td>"
+					                                +"<td class='stock'>" + product.stock + "</td>"
+					                                +"<td><i class='glyphicon glyphicon-ok' id='" + product.prodNo + "'></i><input type='hidden' value=" + product.prodNo + "></td>"
+					                            +"</tr>"
+					                        );
+					                    });
+					                } else {
+					                    console.log("Invalid data received:", JSONData);
+					                }
+					            },
+					            error: function(error) {
+					                console.log("Error:", error);
+					            }
+					        });
+					    }
 
-					//무한 스크롤 로직
-					$(window).scroll(function () {
-						if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-							if (!isLoading) {
-								isLoading = true;
-								currentPage++; // 페이지 번호 증가
-								fncGetProductScroll(currentPage); // 새로운 데이터 로드
-							}
-						}
 					});
 
-					// 무한 스크롤 로직
-					function fncGetProductScroll(currentPage) {
-						var currentPage = parseInt($("#currentPage").val());
-						isLoading = true; // 로딩 시작
-						// AJAX 호출 로직 추가
-						$.ajax({
-							url: "/product/json/listProduct",
-							method: "POST",
-							data: JSON.stringify({
-								currentPage: currentPage + 1,
-								pageSize: 5,
-								searchCondition: $("select[name='searchCondition']").val(),
-								searchKeyword: $("input[name='searchKryword']").val()
 
-							}),
-							dataType: "json",
-							headers: {
-								"Accept": "application/json",
-								"Content-Type": "application/json"
-							},
-
-							success: function (JSONData, status) {
-								// 데이터 추가 로직
-								var iValue = $("#listProduct.tr.td.i").value();
-								var listProductValue =
-									"<tr>"
-									+ "<td align='center'>" + iValue + "</td>"
-									+ "<td align='left' title='Click : 상품정보 확인'>" + JSONData.fileNames + "</td>"
-									+ "<td align='left'>" + JSONData.prodName + "</td>"
-									+ "<td align='left'>" + JSONData.stock + "</td>"
-									+ "<td align='center'>"
-									+ "<i class='glyphicon glyphicon-ok' id='" + JSONData.prodNo + "'></i>"
-									+ "<input type='hidden' value='" + JSONData.prodNo + "'>"
-									+ "</td>"
-									+ "</tr>"
-
-								isLoading = false; // 로딩 완료
-							}
-						});
-					}
 				</script>
 			</head>
 
@@ -196,7 +226,7 @@
 				<!-- ToolBar End /////////////////////////////////////-->
 
 				<!--  화면구성 div Start /////////////////////////////////////-->
-				<div class="container">
+				<div class="container main">
 
 					<div class="page-header text-info">
 						<h3>
@@ -244,9 +274,11 @@
 
 					</div>
 					<!-- table 위쪽 검색 End /////////////////////////////////////-->
-
+				</div>
+				<!--  화면구성 div End /////////////////////////////////////-->
 
 					<!--  table Start /////////////////////////////////////-->
+					<div class="container contents">
 					<table class="table table-hover table-striped">
 
 						<thead>
@@ -259,9 +291,26 @@
 								<th align="center">간략정보</th>
 							</tr>
 						</thead>
-
-						<tbody id="listProduct">
-
+						<tbody id="productList">
+						<%--
+								<tr class="listProduct">
+								
+									<td align="center">${ i }</td>
+									<td align="left" title="Click : 상품정보 확인">
+										<img src="/images/uploadFiles/${product.fileName}"
+											class="img-thumbnail thumbnail" />
+									</td>
+									<td align="left">${product.prodName}</td>
+									<td align="left">${product.price}</td>
+									<td align="left" class="stock">${product.stock}</td>
+									<td align="left">
+										<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
+										<input type="hidden" value="${product.prodNo}">
+									</td>
+									
+								</tr>
+						 --%>
+<%--
 							<c:set var="i" value="0" />
 							<c:forEach var="product" items="${list}">
 								<c:set var="i" value="${ i+1 }" />
@@ -280,15 +329,11 @@
 									</td>
 								</tr>
 							</c:forEach>
-
+ --%>
 						</tbody>
-
 					</table>
 					<!--  table End /////////////////////////////////////-->
-
-				</div>
-				<!--  화면구성 div End /////////////////////////////////////-->
-
+</div>
 
 				<!-- 무한 스크롤 구현을 위한 주석 처리 -->
 				<!-- PageNavigation Start... -->

@@ -147,7 +147,10 @@
 
 					<div class="row">
 						<div class="col-md-12 text-center ">
-							<button type="button" class="btn btn-primary">구매</button>
+							<c:if test="${sessionScope.user.role eq 'user'}">
+								<button type="button" class="btn btn-primary">구매</button>
+							</c:if>
+
 							<a class="btn btn-primary" href="#" role="button">이전</a>
 						</div>
 					</div>

@@ -151,6 +151,14 @@
 									value="${purchase.purchaseProd.price}">
 							</div>
 						</div>
+						
+						<!-- 수량 추가 -->
+						<div class="form-group">
+							<label for="purchaseQty" class="col-sm-offset-1 col-sm-3 control-label">구매 수량</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="purchaseQty" name="purchaseQty">
+							</div>
+						</div>
 
 						<div class="form-group">
 							<label for="regDate" class="col-sm-offset-1 col-sm-3 control-label">등록일자</label>
