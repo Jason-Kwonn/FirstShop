@@ -13,14 +13,20 @@
 				</title>
 				<!-- 참조 : http://getbootstrap.com/css/   참조 -->
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-				<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+				
+				<!--  ///////////////////////// jQuery CDN ////////////////////////// -->
+				<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+				<!-- jQuery UI toolTip 사용 CSS-->
+				<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+				<!-- jQuery UI toolTip 사용 JS-->
+				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+				
+				<!--  ///////////////////////// Bootstrap CDN ////////////////////////// -->
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 				<link rel="stylesheet"
 					href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-				<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-				
+
 
 
 				<!-- Bootstrap Dropdown Hover CSS -->
@@ -30,11 +36,7 @@
 				<script src="/javascript/bootstrap-dropdownhover.min.js"></script>
 
 
-				<!-- jQuery UI toolTip 사용 CSS-->
-				<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-				<!-- jQuery UI toolTip 사용 JS-->
-				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+				
 				<!--  ///////////////////////// CSS ////////////////////////// -->
 				<style>
 					body {
@@ -47,12 +49,7 @@
 						object-fit: cover;
 						/* 이미지 비율을 유지하면서 채우기 */
 					}
-					
-					td {
-					    vertical-align: middle;
-					   	align: center;
-					}
-					
+
 				</style>
 
 				<!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -136,85 +133,124 @@
 						});
 
 					});
-					
-					
 
-					$(document).ready(function() {
-					    let currentPage = 1;
-					    let totalCount = 0;
-					    let globalIndex = 0;
-					    
-						
-					 	// 초기 데이터 로드
-					    loadData(currentPage);
-						
+
+					// infinite scroll
+					$(document).ready(function () {
+						let currentPage = 1;
+						let totalCount = 0;
+						let globalIndex = 0;
+
+
+						// 초기 데이터 로드
+						loadData(currentPage);
+
 						// 스크롤 이벤트 추가
-					    $(window).on('scroll', function() {
-					        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-					            currentPage++; // 페이지 증가
-					            loadData(currentPage); // 새로운 데이터 로드
-					        }
-					    });
-						
-					 	/* // 검색 조건이나 검색 키워드가 변경되면
-					    $('select[name="searchCondition"], #searchKeyword').change(function() {
-					        currentPage = 1; // 페이지를 1로 초기화
-					        $('#productList').empty(); // 기존 리스트를 비움
-					        loadData(currentPage); // 새로운 데이터 로드
-					    }); */
-					    
-					    function loadData(page) {
-					        $.ajax({
-					            url: "/product/json/listProduct",
-					            type: 'GET',
-					            dataType: "json",
+						$(window).on('scroll', function () {
+							if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+								currentPage++; // 페이지 증가
+								loadData(currentPage); // 새로운 데이터 로드
+							}
+						});
+
+						/* // 검색 조건이나 검색 키워드가 변경되면
+					  $('select[name="searchCondition"], #searchKeyword').change(function() {
+						  currentPage = 1; // 페이지를 1로 초기화
+						  $('#productList').empty(); // 기존 리스트를 비움
+						  loadData(currentPage); // 새로운 데이터 로드
+					  }); */
+
+						function loadData(page) {
+							$.ajax({
+								url: "/product/json/listProduct",
+								type: 'GET',
+								dataType: "json",
 								headers: {
 									"Accept": "application/json",
 									"Content-Type": "application/json"
 								},
-					            data: {
-					                currentPage: page,
-					                searchCondition: $('select[name="searchCondition"]').val(),
-					                searchKeyword: $('#searchKeyword').val()
-					            },
-					            success: function(JSONData) {
-					                if (JSONData && JSONData.list) {
-					                    let products = JSONData.list;
-					                    totalCount = JSONData.totalCount;
-					                    let currentCount = $("#productList tr").length;
-					                   	console.log(products);
+								data: {
+									currentPage: page,
+									searchCondition: $('select[name="searchCondition"]').val(),
+									searchKeyword: $('#searchKeyword').val()
+								},
+								success: function (JSONData) {
+									if (JSONData && JSONData.list) {
+										let products = JSONData.list;
+										totalCount = JSONData.totalCount;
+										let currentCount = $("#productList tr").length;
+										console.log(products);
 
-					                    if (currentCount >= totalCount) {
-					                        $(window).off('scroll'); // 스크롤 이벤트 제거
-					                        return;
-					                    }
+										if (currentCount >= totalCount) {
+											$(window).off('scroll'); // 스크롤 이벤트 제거
+											return;
+										}
 
-					                    products.forEach(function(product) {
-					                    	
-					                    	globalIndex++;
-					                    	
-					                        $('#productList').append(
-					                            "<tr>"
-					                                +"<td>" + globalIndex + "</td>"
-					                                +"<td><img src='/images/uploadFiles/" + product.fileName + "' class='img-thumbnail thumbnail' /></td>"
-					                                +"<td>" + product.prodName + "</td>"
-					                                +"<td>" + product.price + "</td>"
-					                                +"<td class='stock'>" + product.stock + "</td>"
-					                                +"<td><i class='glyphicon glyphicon-ok' id='" + product.prodNo + "'></i><input type='hidden' value=" + product.prodNo + "></td>"
-					                            +"</tr>"
-					                        );
-					                    });
-					                } else {
-					                    console.log("Invalid data received:", JSONData);
-					                }
-					            },
-					            error: function(error) {
-					                console.log("Error:", error);
-					            }
-					        });
-					    }
+										products.forEach(function (product) {
+
+											globalIndex++;
+
+											$('#productList').append(
+												"<tr>"
+												+ "<td>" + globalIndex + "</td>"
+												+ "<td><img src='/images/uploadFiles/" + product.fileName + "' class='img-thumbnail thumbnail' /></td>"
+												+ "<td>" + product.prodName + "</td>"
+												+ "<td>" + product.price + "</td>"
+												+ "<td class='stock'>" + product.stock + "</td>"
+												+ "<td><i class='glyphicon glyphicon-ok' id='" + product.prodNo + "'></i><input type='hidden' value=" + product.prodNo + "></td>"
+												+ "</tr>"
+											);
+										});
+									} else {
+										console.log("Invalid data received:", JSONData);
+									}
+								},
+								error: function (error) {
+									console.log("Error:", error);
+								}
+							});
+						}
 
 					});
+					// end of infinite scroll
+
+					// auto-complete
+					$(function () {
+						$("#searchKeyword").autocomplete({
+							source: function (request, response) {
+
+								$.ajax({
+									url: "/product/json/queryProduct",
+									method: "GET",
+									dataType: "json",
+									headers: {
+										"Accept": "application/json",
+										"Content-Type": "application/json"
+									},
+									data: {
+										searchCondition: $('select[name="searchCondition"]').val(),
+										searchKeyword: request.term
+									},
+									success: function (JSONData) {
+										//debug
+										console.log(JSONData);
+																			
+										let searchKeywords = JSONData.map(product => product.prodName); // prodName 추출
+										console.log(searchKeywords);
+										response(searchKeywords.slice(0, 10)); // 최대 10개 지정
+										
+									},
+									error: function (error) {
+										console.log("Error:", error);
+										response([]);
+									}
+								});
+							},
+							minLength: 2 // 최소 2글자 입력 시 이벤트 발생
+						});
+					});
+
+					// end of auto-complete
 
 
 				</script>
@@ -277,8 +313,8 @@
 				</div>
 				<!--  화면구성 div End /////////////////////////////////////-->
 
-					<!--  table Start /////////////////////////////////////-->
-					<div class="container contents">
+				<!--  table Start /////////////////////////////////////-->
+				<div class="container contents">
 					<table class="table table-hover table-striped">
 
 						<thead>
@@ -292,48 +328,46 @@
 							</tr>
 						</thead>
 						<tbody id="productList">
-						<%--
-								<tr class="listProduct">
-								
-									<td align="center">${ i }</td>
-									<td align="left" title="Click : 상품정보 확인">
-										<img src="/images/uploadFiles/${product.fileName}"
-											class="img-thumbnail thumbnail" />
-									</td>
-									<td align="left">${product.prodName}</td>
-									<td align="left">${product.price}</td>
-									<td align="left" class="stock">${product.stock}</td>
-									<td align="left">
-										<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
-										<input type="hidden" value="${product.prodNo}">
-									</td>
-									
+							<%-- <tr class="listProduct">
+
+								<td align="center">${ i }</td>
+								<td align="left" title="Click : 상품정보 확인">
+									<img src="/images/uploadFiles/${product.fileName}"
+										class="img-thumbnail thumbnail" />
+								</td>
+								<td align="left">${product.prodName}</td>
+								<td align="left">${product.price}</td>
+								<td align="left" class="stock">${product.stock}</td>
+								<td align="left">
+									<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
+									<input type="hidden" value="${product.prodNo}">
+								</td>
+
 								</tr>
-						 --%>
-<%--
-							<c:set var="i" value="0" />
-							<c:forEach var="product" items="${list}">
-								<c:set var="i" value="${ i+1 }" />
-								<tr>
-									<td align="center">${ i }</td>
-									<td align="left" title="Click : 상품정보 확인">
-										<img src="/images/uploadFiles/${product.fileName}"
-											class="img-thumbnail thumbnail" />
-									</td>
-									<td align="left">${product.prodName}</td>
-									<td align="left">${product.price}</td>
-									<td align="left" class="stock">${product.stock}</td>
-									<td align="left">
-										<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
-										<input type="hidden" value="${product.prodNo}">
-									</td>
-								</tr>
-							</c:forEach>
- --%>
+								--%>
+								<%-- <c:set var="i" value="0" />
+								<c:forEach var="product" items="${list}">
+									<c:set var="i" value="${ i+1 }" />
+									<tr>
+										<td align="center">${ i }</td>
+										<td align="left" title="Click : 상품정보 확인">
+											<img src="/images/uploadFiles/${product.fileName}"
+												class="img-thumbnail thumbnail" />
+										</td>
+										<td align="left">${product.prodName}</td>
+										<td align="left">${product.price}</td>
+										<td align="left" class="stock">${product.stock}</td>
+										<td align="left">
+											<i class="glyphicon glyphicon-ok" id="${product.prodNo}"></i>
+											<input type="hidden" value="${product.prodNo}">
+										</td>
+									</tr>
+								</c:forEach>
+								--%>
 						</tbody>
 					</table>
 					<!--  table End /////////////////////////////////////-->
-</div>
+				</div>
 
 				<!-- 무한 스크롤 구현을 위한 주석 처리 -->
 				<!-- PageNavigation Start... -->

@@ -46,7 +46,7 @@
 		<where>
 			<!-- 0 : 상품명 -->
 			<if test="searchCondition == 0 and searchKeyword !='' ">
-			prod_name LIKE '%' || #{prodName} || '%'
+			prod_name LIKE '%' || #{searchKeyword} || '%'
 			</if>
 			<!-- 1 : n 원 이하인 상품 -->
 			<if test="searchCondition == 1 and searchKeyword !='' ">
