@@ -5,6 +5,8 @@ import com.jasonproject.firstshop.service.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService {
 
@@ -17,18 +19,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) throws Exception {
-
+    public User addUser(User user) throws Exception {
+        userRepository.save(user);
+        System.out.println(userRepository.save(user));
+        return user;
     }
 
     @Override
-    public User getUser(String userId) throws Exception {
+    public User getOneUser(String userId) throws Exception {
         return userRepository.findByUserId(userId);
     }
 
     @Override
-    public void updateUser(User user) throws Exception {
+    public List<User> getAllUser() throws Exception {
+        return userRepository.findAll();
+    }
 
+    @Override
+    public User updateUser(User user) throws Exception {
+        userRepository.save(user);
+        System.out.println(userRepository.save(user));
+        return user;
     }
 
     @Override

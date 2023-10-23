@@ -1,10 +1,11 @@
 package com.jasonproject.firstshop.service.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
@@ -13,17 +14,20 @@ import java.sql.Timestamp;
 @Table(name = "users") // table name
 public class User {
 
-	///Method
 	///Field
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_pk", nullable = false)
+	private Long userPk;
 	@Column(name = "user_id", nullable = false)
 	private String userId;
 	@Column(name = "user_name", nullable = false)
 	private String userName;
 	@Column(name = "password", nullable = false)
 	private String password;
-	@Column(name = "role", columnDefinition = "DEFAULT 'user'")
-	private String role;
+	@Builder.Default // 이걸 넣고
+	@Column(name = "role")
+	private String role = "user"; // 여기에 기본 값을 세팅할 떄 대입한 값으로 세팅 됨
 	@Column(name = "ssn")
 	private String ssn;
 	@Column(name = "cell_phone")
@@ -32,7 +36,8 @@ public class User {
 	private String addr;
 	@Column(name = "email")
 	private String email;
-	@Column(name = "reg_date")
+	@CreationTimestamp
+	@Column(name = "reg_date", updatable = false) //@UpdateTimestamp 이건 update 시 하는 것.
 	private Timestamp regDate;
 
 	@Transient
@@ -72,10 +77,13 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-		if(phone != null && !phone.isEmpty()){
-			phone1 = phone.split("-")[0];
-			phone2 = phone.split("-")[1];
-			phone3 = phone.split("-")[2];
+		if(phone != null && phone.contains("-")){
+			String[] phoneParts = phone.split("-");
+			if(phoneParts.length == 3) {
+				phone1 = phoneParts[0];
+				phone2 = phoneParts[1];
+				phone3 = phoneParts[2];
+			}
 		}
 	}
 
@@ -92,8 +100,8 @@ public class User {
 
 		if(regDate !=null) {
 			this.setRegDateString( regDate.toString().split("-")[0]
-					+"-"+ regDate.toString().split("-")[1]
-					+ "-" +regDate.toString().split("-")[2] );
+					+ "-" + regDate.toString().split("-")[1]
+					+ "-" +regDate.toString().split("-")[2].substring(0, 2) );
 		}
 
 	}
