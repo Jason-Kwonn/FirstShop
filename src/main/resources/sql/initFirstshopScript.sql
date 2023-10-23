@@ -1,6 +1,5 @@
 # MySql ver.
 
-
 DROP TABLE IF EXISTS transaction;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS users;
@@ -13,7 +12,8 @@ DROP TABLE IF EXISTS users;
 USE firstshop;
 
 CREATE TABLE users (
-                       user_id VARCHAR(20) NOT NULL PRIMARY KEY,
+                       user_pk BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                       user_id VARCHAR(20) NOT NULL,
                        user_name VARCHAR(50) NOT NULL,
                        password VARCHAR(10) NOT NULL,
                        role VARCHAR(5) DEFAULT 'user',
@@ -21,8 +21,8 @@ CREATE TABLE users (
                        cell_phone VARCHAR(14),
                        addr VARCHAR(100),
                        email VARCHAR(50),
-                       reg_date TIMESTAMP
-);
+                       reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) AUTO_INCREMENT=10000;
 
 
 CREATE TABLE product (
@@ -31,9 +31,22 @@ CREATE TABLE product (
                          prod_detail VARCHAR(200),
                          manufacture_day VARCHAR(8),
                          price INT,
+                         quantity INT,
+                         likes INT,
+                         see INT,
                          image_file VARCHAR(100),
-                         reg_date TIMESTAMP
+                         reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) AUTO_INCREMENT=10000;
+
+# ALTER TABLE product ADD COLUMN (
+#     quantity INT,
+#     likes INT,
+#     see INT
+#     );
+#
+# select *
+# from product;
+
 
 
 CREATE TABLE transaction (
@@ -46,15 +59,15 @@ CREATE TABLE transaction (
                              dlvy_addr VARCHAR(100),
                              dlvy_request VARCHAR(100),
                              tran_status_code CHAR(3),
-                             order_date TIMESTAMP,
+                             order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                              dlvy_date TIMESTAMP
 ) AUTO_INCREMENT=10000;
 
 
 
 INSERT
-INTO users ( user_id, user_name, password, role, ssn, cell_phone, addr, email, reg_date )
-VALUES ( 'admin', 'admin', '1234', 'admin', NULL, NULL, '서울시 서초구', 'admin@mvc.com', str_to_date('2012/01/14 10:48:43', '%Y/%m/%d %H:%i:%s'));
+INTO users (user_id, user_name, password, role, ssn, cell_phone, addr, email, reg_date )
+VALUES ('admin', 'admin', '1234', 'admin', NULL, NULL, '서울시 서초구', 'admin@mvc.com', str_to_date('2012/01/14 10:48:43', '%Y/%m/%d %H:%i:%s'));
 
 INSERT
 INTO users ( user_id, user_name, password, role, ssn, cell_phone, addr, email, reg_date )
@@ -146,3 +159,12 @@ insert into product(prod_name, prod_detail, manufacture_day, price, image_file, 
 values ('연꽃','정원을 가꿔보세요','20121022',232300, 'AHlbAAAAtDPSiQAA.jpg',str_to_date('2012/11/15 17:39:01', '%Y/%m/%d %H:%i:%s'));
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
 values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+
+
+delete
+from users
+where user_pk = 10025;
+
+select *
+from users;
+# where user_id = 'temp01';
