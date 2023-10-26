@@ -5,6 +5,7 @@ import com.jasonproject.firstshop.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,12 +81,4 @@ public class UserRestController {
 		return userService.getAllUser();
 	}
 
-	@RequestMapping(value = "/checkDuplicate", method = RequestMethod.POST)
-	public User checkDuplicate(@RequestBody User user) throws Exception {
-
-		System.out.println("/user/checkDuplicate : POST json");
-		System.out.println(user);
-
-		return userService.getOneUser(user.getUserId());
-	}
 }

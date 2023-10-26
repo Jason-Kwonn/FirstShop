@@ -42,8 +42,4 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
-    public boolean checkDuplication(String userId) throws Exception {
-        return false;
-    }
 }

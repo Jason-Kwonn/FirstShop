@@ -20,6 +20,4 @@ public interface UserService {
     // 회원정보수정
     User updateUser(User user) throws Exception;
 
-    // 회원 ID 중복 확인
-    boolean checkDuplication(String userId) throws Exception;
 }
