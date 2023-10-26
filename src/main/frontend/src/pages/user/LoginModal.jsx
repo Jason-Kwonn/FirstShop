@@ -2,7 +2,7 @@ import {useContext, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Nav from "react-bootstrap/Nav";
-import {Form} from "react-bootstrap";
+import {Form, Image} from "react-bootstrap";
 import {UserContext} from "../../contexts/user/UserContext.jsx";
 
 // eslint-disable-next-line react/prop-types
@@ -54,6 +54,13 @@ function LoginModal({onLoginSuccess}) { // prop onLogin 추가 : 로그인 submi
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const naverLogin = async () => {
+        const response = await fetch('https://nid.naver.com/oauth2.0/authorize')
+        if (response.ok) {
+            console.log(response.status);
+        }
+    };
+
 
     return (
         <>
@@ -91,6 +98,9 @@ function LoginModal({onLoginSuccess}) { // prop onLogin 추가 : 로그인 submi
                         <Button type="submit" variant="primary">
                             로그인
                         </Button>
+                    </Modal.Footer>
+                    <Modal.Footer style={{ padding: '20px 50px' }}>
+                        <Image src="/naver/btnG.png" alt="네이버로그인" onClick={naverLogin} style={{ width: '100px', height: '30px' }}/>
                     </Modal.Footer>
                 </Form>
             </Modal>

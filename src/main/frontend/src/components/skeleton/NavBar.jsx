@@ -40,19 +40,16 @@ function NavBar() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary navbar-bottom-margin">
             <Container>
-                <Navbar.Brand href="/">Kreamy</Navbar.Brand>
+                <Navbar.Brand href="/">Rafflex</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <NavDropdown title="더보기" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/product/listProduct">어떤걸</NavDropdown.Item>
-                            <NavDropdown.Item href="/product/listProduct">고르셔도</NavDropdown.Item>
-                            <NavDropdown.Item href="/product/listProduct">전부</NavDropdown.Item>
+                        <NavDropdown title="쇼핑하기" id="basic-nav-dropdown">
+                            <NavDropdown.Item as={Link} to="/product/getProductList">상품 리스트</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/product/listProduct">쇼핑 리스트입니다.</NavDropdown.Item>
-                            <NavDropdown.Item href="/product/listProduct">드롭다운 연습 하려고 만들었습니다.</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/purchase/getPurchaseList">구매 정보</NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link href="#raffle">Raffle.. 만들고 만다..</Nav.Link>
+                        <Nav.Link as={Link} to="/raffle">Raffle</Nav.Link>
                     </Nav>
 
                     <Nav>

@@ -1,7 +1,6 @@
 import {useContext, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import HomeLayout from "../../components/skeleton/HomeLayout.jsx";
 import {Link} from "react-router-dom";
 import {UserContext} from "../../contexts/user/UserContext.jsx";
 
@@ -71,8 +70,8 @@ function GetUser() {
             }
 
             // 숫자만 포함된 문자열인지 확인
-            const isNumeric = /^[0-9]+$/.test(e.target.value);
-            setIsPhoneValid(isNumeric);
+            const isNumericOrNegative = /^-?[0-9]+(\.[0-9]+)?$/.test(e.target.value);
+            setIsPhoneValid(isNumericOrNegative);
         }
 
         if (e.target.name === 'email') {
@@ -84,7 +83,6 @@ function GetUser() {
 
     return (
         <>
-            <HomeLayout/>
             <Form noValidate validated={validated} onSubmit={handleSubmit}
                   className="container col-md-5 align-self-center mt-5 col-form-label-lg col-form-text-lg">
                 <Form.Text className="text-center">
