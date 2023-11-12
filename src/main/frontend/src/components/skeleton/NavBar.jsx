@@ -2,23 +2,36 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import {Button, Form} from "react-bootstrap";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import LoginModal from "../../pages/user/LoginModal.jsx";
 import AddUserModal from "../../pages/user/AddUserModal.jsx";
 import {Link} from "react-router-dom";
-import {AuthUserContext} from "../../contexts/user/AuthUserContext.jsx";
 import {UserContext} from "../../contexts/user/UserContext.jsx";
+import SearchBar from "./SearchBar.jsx";
+import "./NavBar.css";
 
 function NavBar() {
 
-    const { user } = useContext(UserContext);
-    const {isLoggedIn, setIsLoggedIn} = useContext(AuthUserContext);
+    const { user, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showAddUserModal, setShowAddUserModal] = useState(false);
+    const [isAdminUser, setIsAdminUser] = useState(false);
 
     const handleLoginClose = () => setShowLoginModal(false);
     const handleAddUserClose = () => setShowAddUserModal(false);
+
+    useEffect(() => {
+        const checkIsAdminUser = () => {
+            if (user.role === "admin") {
+                console.log(user.role);
+                setIsAdminUser(true);
+            } else {
+                console.log(user.role);
+            }
+        };
+
+        checkIsAdminUser();
+    }, [user]);
 
     const loginSuccess = () => {
         setIsLoggedIn(true);
@@ -40,12 +53,17 @@ function NavBar() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary navbar-bottom-margin">
             <Container>
-                <Navbar.Brand href="/">Rafflex</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">Rafflex</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavDropdown title="쇼핑하기" id="basic-nav-dropdown">
                             <NavDropdown.Item as={Link} to="/product/getProductList">상품 리스트</NavDropdown.Item>
+                            {isAdminUser && (
+                                <>
+                                    <NavDropdown.Item as={Link} to="/product/addProduct">상품 추가</NavDropdown.Item>
+                                </>
+                            )}
                             <NavDropdown.Divider />
                             <NavDropdown.Item as={Link} to="/purchase/getPurchaseList">구매 정보</NavDropdown.Item>
                         </NavDropdown>
@@ -57,29 +75,13 @@ function NavBar() {
                             <>
                                 <Nav.Link as={Link} to="/user/getUser" >내정보</Nav.Link>
                                 <Nav.Link onClick={logoutUser}>로그아웃</Nav.Link>
-                                <Form className="d-flex" style={{marginRight: '20px'}}>
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="Search"
-                                        className="me-2"
-                                        aria-label="Search"
-                                    />
-                                    <Button variant="outline-success">Search</Button>
-                                </Form>
+                                <SearchBar/>
                             </>
                         ) : (
                             <>
                                 <LoginModal show={showLoginModal} handleClose={handleLoginClose} onLoginSuccess={loginSuccess}/>
                                 <AddUserModal show={showAddUserModal} handleClose={handleAddUserClose} />
-                                <Form className="d-flex" style={{marginRight: '20px'}}>
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="상품명 or 래플"
-                                        className="me-2"
-                                        aria-label="search"
-                                    />
-                                    <Button variant="outline-success">Search</Button>
-                                </Form>
+                                <SearchBar/>
                             </>
                         )}
                     </Nav>

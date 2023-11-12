@@ -19,33 +19,28 @@ function GetUser() {
     };
 
     const handleSubmit = async (event) => {
-        const form = event.currentTarget;
+        event.preventDefault();
 
         try {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
+            const response = await fetch('/user/updateUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user),
+            });
+            console.log('Submitted Data:', user);
 
-                const response = await fetch('/user/updateUser', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(user),
-                });
-
-                if (response.ok) {
-                    console.log("수정 완료!");
-                }
-
-                window.location.href = "/user/getUser";
+            if (response.ok) {
+                localStorage.setItem("user", user);
+                alert("수정 완료!");
+                setIsGetUser(true);
             }
-        } catch (error) {
-            console.error(error);
         }
 
-        setValidated(true);
-
+        catch (error) {
+            console.error(error);
+        }
     };
 
     const handleChange = (e) => {
@@ -78,6 +73,13 @@ function GetUser() {
             if (allUser.some(u => u.email === e.target.value)) {
                 setIsEmailDuplicated(true);
             }
+        }
+
+        if (isEmailDuplicated === false
+            && isPhoneDuplicated === false
+            && isNameDuplicated === false
+            && isPhoneValid === true) {
+            setValidated(true);
         }
     };
 
@@ -112,7 +114,8 @@ function GetUser() {
                         disabled={isGetUser}
                         onChange={handleChange}
                     />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    <Form.Control.Feedback>입력 완료</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">비밀번호를 입력해 주세요.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="userName">
                     <Form.Label>이름</Form.Label>
@@ -196,8 +199,8 @@ function GetUser() {
                 </Form.Group>
                 :
                 <Form.Group className="text-end" >
-                    <Button id="cancel" type="submit" variant="secondary" as={Link} to="/">취소</Button>
-                    <Button id="submit" className="m-2" type="submit" variant="primary" as={Link} to="/user/getUser">수정 완료</Button>
+                    <Button id="cancel" variant="secondary" as={Link} to="/">취소</Button>
+                    <Button id="submit" className="m-2" type="submit" variant="primary">수정 완료</Button>
                 </Form.Group>
                 }
             </Form>

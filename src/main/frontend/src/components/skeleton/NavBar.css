@@ -1,3 +1,7 @@
 .navbar-bottom-margin {
-    padding-bottom: 5rem; /* 원하는 공간만큼의 값으로 조정 */
+    position: fixed;  /* Navbar를 고정합니다 */
+    top: 0;  /* Navbar를 화면의 상단에 위치시킵니다 */
+    left: 0;  /* 화면의 왼쪽에 정렬합니다 */
+    right: 0;  /* 화면의 오른쪽에 정렬합니다 */
+    z-index: 1030;  /* 다른 요소 위에 Navbar가 표시되도록 합니다 */
 }

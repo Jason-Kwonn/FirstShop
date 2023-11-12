@@ -5,9 +5,11 @@ import com.jasonproject.firstshop.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,18 +28,19 @@ public class UserRestController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public User userLogin(@RequestBody User user, HttpSession session) throws Exception {
+	public User userLogin(@RequestBody User user) throws Exception {
 
 		System.out.println("/user/login : POST json");
 
-		//Business Logic
+		System.out.println(user);
+
 		User dbUser = userService.getOneUser(user.getUserId());
-		session.setAttribute("user", dbUser);
-		System.out.println(session.getId());
+
 		System.out.println(dbUser);
 
 		return dbUser;
 	}
+
 
 	@RequestMapping(value = "/checkLogin", method = RequestMethod.GET)
 	public User checkLogin(HttpSession session) {

@@ -32,60 +32,60 @@ dependencies {
 //	implementation "org.springframework.boot:spring-boot-starter-security"
 }
 
-////////////////////////////// vite-react start //////////////////////////////
-// frontend root
-def webappDir = "$projectDir/src/main/frontend"
-
-// set source location
-sourceSets {
-	main {
-		resources {
-			// $webappDir/build 는 react, $webappDir/dist 는 vite-react
-			srcDirs = ["$webappDir/dist", "$projectDir/src/main/resources"]
-		}
-	}
-}
-
-// Vite 빌드 관련 설정
-processResources {
-	dependsOn "buildVite"
-}
-
-// 아래는 이전 버전 문법
-//task buildVite(type: Exec) {
-// 아래는 gradle 5.1 이상 버전 권장 문법
-tasks.register('buildVite', Exec) {
-	dependsOn "installViteDeps"
-	workingDir "$webappDir"
-	inputs.dir "$webappDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine "npm.cmd", "run", "build"
-	} else {
-		commandLine "npm", "run", "build"
-	}
-}
-
-// 아래는 이전 버전 문법
-//task installViteDeps(type: Exec)
-// 아래는 gradle 5.1 이상 버전 권장 문법
-tasks.register('installViteDeps', Exec) {
-	workingDir "$webappDir"
-	inputs.dir "$webappDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine "npm.cmd", "install"
-	} else {
-		commandLine "npm", "install"
-	}
-}
-
-// spring boot 실행 시 vite 먼저 build
-bootRun {
-	dependsOn 'buildVite'
-}
-
-////////////////////////////// vite-react end //////////////////////////////
+//////////////////////////////// vite-react start //////////////////////////////
+//// frontend root
+//def webappDir = "$projectDir/src/main/frontend"
+//
+//// set source location
+//sourceSets {
+//	main {
+//		resources {
+//			// $webappDir/build 는 react, $webappDir/dist 는 vite-react
+//			srcDirs = ["$webappDir/dist", "$projectDir/src/main/resources"]
+//		}
+//	}
+//}
+//
+//// Vite 빌드 관련 설정
+//processResources {
+//	dependsOn "buildVite"
+//}
+//
+//// 아래는 이전 버전 문법
+////task buildVite(type: Exec) {
+//// 아래는 gradle 5.1 이상 버전 권장 문법
+//tasks.register('buildVite', Exec) {
+//	dependsOn "installViteDeps"
+//	workingDir "$webappDir"
+//	inputs.dir "$webappDir"
+//	group = BasePlugin.BUILD_GROUP
+//	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+//		commandLine "npm.cmd", "run", "build"
+//	} else {
+//		commandLine "npm", "run", "build"
+//	}
+//}
+//
+//// 아래는 이전 버전 문법
+////task installViteDeps(type: Exec)
+//// 아래는 gradle 5.1 이상 버전 권장 문법
+//tasks.register('installViteDeps', Exec) {
+//	workingDir "$webappDir"
+//	inputs.dir "$webappDir"
+//	group = BasePlugin.BUILD_GROUP
+//	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+//		commandLine "npm.cmd", "install"
+//	} else {
+//		commandLine "npm", "install"
+//	}
+//}
+//
+//// spring boot 실행 시 vite 먼저 build
+//bootRun {
+//	dependsOn 'buildVite'
+//}
+//
+//////////////////////////////// vite-react end //////////////////////////////
 
 tasks.named('test') {
 	useJUnitPlatform()

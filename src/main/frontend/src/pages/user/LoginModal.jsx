@@ -2,64 +2,67 @@ import {useContext, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Nav from "react-bootstrap/Nav";
-import {Form, Image} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import {UserContext} from "../../contexts/user/UserContext.jsx";
 
 // eslint-disable-next-line react/prop-types
 function LoginModal({onLoginSuccess}) { // prop onLogin 추가 : 로그인 submit 시 동작
 
     const [show, setShow] = useState(false);
-    const {user, setUser} = useContext(UserContext);
-
+    const {setUser} = useContext(UserContext);
+    const [localUser, setLocalUser] = useState({});
 
     const handleChange = (e) => {
         // const { name, value } = e.target;
-        setUser(prev =>({
+        setLocalUser(prev =>({
             ...prev,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         }));
+        console.log(e.target.name, e.target.value);
     };
 
     // 사용자 정보 호출 함수
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 여기서 formData를 사용하여 로그인 로직을 처리하거나 서버에 요청을 보낼 수 있습니다.
-        console.log('Submitted Data:', user);
-        // 예: await fetch('/api/login', { method: 'POST', body: JSON.stringify(formData) });
+        console.log('Submitted Data:', localUser);
+
         try {
             const response = await fetch('/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(user),
+                body: JSON.stringify(localUser),
             });
+            console.log(JSON.stringify(localUser));
+
+            const userData = await response.json();
 
             if (response.ok) {
-                const userData = await response.json();
-
                 console.log("Login OK!!!", userData);
                 setUser(userData);
+                localStorage.setItem("user", JSON.stringify(userData));
+                console.log(localStorage.getItem("user"));
                 onLoginSuccess();
                 handleClose();
-
-            } else console.log('Login failed! Totally!!');
+            } else {
+                console.log("What's wrong??", userData);
+            }
 
         } catch (error) {
             console.error(error);
         }
-
     };
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const naverLogin = async () => {
-        const response = await fetch('https://nid.naver.com/oauth2.0/authorize')
-        if (response.ok) {
-            console.log(response.status);
-        }
-    };
+    // const naverLogin = async () => {
+    //     const response = await fetch('https://nid.naver.com/oauth2.0/authorize')
+    //     if (response.ok) {
+    //         console.log(response.status);
+    //     }
+    // };
 
 
     return (
@@ -83,7 +86,7 @@ function LoginModal({onLoginSuccess}) { // prop onLogin 추가 : 로그인 submi
                                 </Form.Text>
                             </Form.Group>
 
-                            <Form.Group className="mb-3" controlId="password" onChange={handleChange}>
+                            <Form.Group className="mb-3" controlId="password">
                                 <Form.Label>비밀번호</Form.Label>
                                 <Form.Control type="password" placeholder="비밀번호를 입력해 주세요." name="password" onChange={handleChange} />
                                 <Form.Text className="text-muted">
@@ -99,9 +102,9 @@ function LoginModal({onLoginSuccess}) { // prop onLogin 추가 : 로그인 submi
                             로그인
                         </Button>
                     </Modal.Footer>
-                    <Modal.Footer style={{ padding: '20px 50px' }}>
-                        <Image src="/naver/btnG.png" alt="네이버로그인" onClick={naverLogin} style={{ width: '100px', height: '30px' }}/>
-                    </Modal.Footer>
+                    {/*<Modal.Footer style={{ padding: '20px 50px' }}>*/}
+                    {/*    <Image src="/naver/btnG.png" alt="네이버로그인" onClick={naverLogin} style={{ width: '100px', height: '30px' }}/>*/}
+                    {/*</Modal.Footer>*/}
                 </Form>
             </Modal>
         </>

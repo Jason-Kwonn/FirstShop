@@ -20,4 +20,5 @@ public interface UserService {
     // 회원정보수정
     User updateUser(User user) throws Exception;
 
+
 }

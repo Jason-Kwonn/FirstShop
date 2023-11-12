@@ -34,13 +34,16 @@ CREATE TABLE product (
                          quantity INT DEFAULT 0,
                          likes INT DEFAULT 0,
                          see INT DEFAULT 0,
-                         image_file VARCHAR(100),
+                         image_file VARCHAR(1000),
                          reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) AUTO_INCREMENT=10000;
 
 # UPDATE product SET
 #     see = 0
 # WHERE see IS NULL;
+
+# ALTER TABLE product
+#     MODIFY COLUMN image_file VARCHAR(1000);
 
 
 #
@@ -52,9 +55,9 @@ CREATE TABLE product (
 CREATE TABLE transaction (
                              tran_no INT AUTO_INCREMENT PRIMARY KEY,
                              prod_no INT NOT NULL,
-                             quantity INT NOT NULL ,
-                             buyer_id VARCHAR(20) NOT NULL,
-                             payment_option CHAR(3),
+                             quantity INT NOT NULL DEFAULT 0,
+                             user_pk BIGINT NOT NULL,
+                             payment_option CHAR(3) NOT NULL DEFAULT '1',
                              receiver_name VARCHAR(20),
                              receiver_phone VARCHAR(14),
                              dlvy_addr VARCHAR(100),
@@ -168,46 +171,30 @@ insert into product(prod_name, prod_detail, manufacture_day, price, image_file, 
 values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
 
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+values ('나이키신발1','Just Do it!','20231026',120000, '9bc016bc-cd7a-49cc-a399-47930b00c59f.webp',str_to_date('2023/10/26 00:00:00', '%Y/%m/%d %H:%i:%s'));
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+values ('나이키신발2','Just Do it!','20231026',150000, '41ff8261-15bd-4b3f-bde7-49c6217abb8d.webp',str_to_date('2023/10/26 00:00:00', '%Y/%m/%d %H:%i:%s'));
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+values ('나이키신발3','Just Do it!','20231026',170000, 'e6da41fa-1be4-4ce5-b89c-22be4f1f02d4.webp',str_to_date('2023/10/26 00:00:00', '%Y/%m/%d %H:%i:%s'));
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+values ('나이키신발4','Just Do it!','20231026',170000, 'ef66458b-6949-44e7-a35e-21818fc5d1e1.webp',str_to_date('2023/10/26 00:00:00', '%Y/%m/%d %H:%i:%s'));
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+values ('나이키신발5','Just Do it!','20231026',170000, 'rorabfpoffxpmekxfaq7.webp',str_to_date('2023/10/26 00:00:00', '%Y/%m/%d %H:%i:%s'));
 insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
-insert into product(prod_name, prod_detail, manufacture_day, price, image_file, reg_date)
-values ('삼성센스','노트북','20120212',600000, 'AHlbAAAAug1vsgAA.jpg',str_to_date('2012/11/12 13:04:31', '%Y/%m/%d %H:%i:%s'));
+values ('나이키신발6','Just Do it!','20231026',170000, 'zjrheo7cjgrv6opt8txu.webp',str_to_date('2023/10/26 00:00:00', '%Y/%m/%d %H:%i:%s'));
+
+# delete
+# from product
+# where prod_name = '삼성센스';
+
 
 select *
 from product;
 
+# delete
+# from users
+# where user_pk = 10025;
 
-delete
-from users
-where user_pk = 10025;
-
-select *
-from users;
+# select *
+# from users;
 # where user_id = 'temp01';

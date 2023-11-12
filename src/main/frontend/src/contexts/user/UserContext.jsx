@@ -4,28 +4,35 @@ import {createContext, useEffect, useState} from "react";
 export const UserContext = createContext({
     user: {},
     setUser: () => {},
-    allUser: []
+    allUser: [],
+    setAllUser: () => []
 });
 
 // eslint-disable-next-line react/prop-types
 export function UserContextProvider({children}) {
     const [user, setUser] = useState({});
     const [allUser, setAllUser] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(  () => {
+    useEffect(() => {
         async function checkLogin() {
             try {
-                const response = await fetch('/user/checkLogin');
-                const contentType = response.headers.get('Content-Type');
+                const baseUserInfo = JSON.parse(localStorage.getItem("user") || '{}');
+                console.log(baseUserInfo);
 
-                if (contentType && response.ok && contentType.includes('application/json')) {
-                    const loggedInUser = await response.json();
-                    setUser(loggedInUser);
+                if (baseUserInfo && baseUserInfo.userId) {
+                    setUser(baseUserInfo);
+                    setIsLoggedIn(true);
+                    console.log('Setting user from localStorage:', baseUserInfo);
+                } else {
+                    setIsLoggedIn(false);
+                    console.log('Resetting user state.');
                 }
+
             } catch (error) {
                 console.error(error);
             }
-        } // end of checkLogin
+        }
 
         async function getUserInfo() {
             try {
@@ -45,7 +52,7 @@ export function UserContextProvider({children}) {
 
 
     return (
-        <UserContext.Provider value={{user, setUser, allUser, setAllUser}}>
+        <UserContext.Provider value={{user, setUser, allUser, setAllUser, isLoggedIn, setIsLoggedIn}}>
             {children}
         </UserContext.Provider>
     )
