@@ -7,27 +7,44 @@ import Container from "react-bootstrap/Container";
 
 // eslint-disable-next-line react/prop-types
 function GetProduct() {
-    const {prodNo} = useParams();
-    // const [validated, setValidated] = useState(false);
-    // const [isPurchaseQtyValid, setIsPurchaseQtyValid] = useState(false);
+    const {query} = useParams();
     const [product, setProduct] = useState({});
 
     useEffect(() => {
+
+        console.log("searchBar 에서 받은 query : " + query);
+
         const fetchProduct = async () => {
+            console.log("fetchProduct 로 들어온 query : " + query);
+
+            if (!query) {
+                console.error("Product input is undefined");
+                return;
+            }
+
             try {
-                const response = await fetch(`/product/getProduct/${prodNo}`);
+                const response = await fetch(`/product/getProduct/${query}`);
                 const oneProductData = await response.json();
 
                 if (response.ok) {
                     setProduct(oneProductData);
-                    console.log("fetch getProduct ok!!")
+                    console.log("fetch getProduct ok!!");
+                } else {
+                    console.log("fetchProduct 이후 들어온 query : " + query);
+                    // 오류 처리
+                    console.log("fetch getProduct NOT OK!!!");
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Error fetching product:", error);
+                // 사용자에게 오류 표시
             }
         };
-        fetchProduct();
-    }, [prodNo]);
+
+        fetchProduct().then(() => {
+            console.log("fetchProduct 종료");
+        });
+    }, [query]);
+
 
 
     const handleSubmit = async (event) => {
@@ -45,12 +62,11 @@ function GetProduct() {
             if (response.ok) {
                 alert("구매 완료!");
             }
-            // setValidated(true);
-            window.location.href = "/product/getProductList";
 
         } catch (error) {
             console.error(error);
         }
+
 
     };
 
@@ -99,7 +115,11 @@ function GetProduct() {
                         </Col>
                         <Col sm="6" className="d-flex justify-content-center">
                             <Form.Control type="hidden" name="fileName" value={product.fileName} />
-                            <Image src={`/uploadFiles/${product.fileName}`} thumbnail/>
+                            {product.fileName ? (
+                                <Image src={`/uploadFiles/${product.fileName}`} thumbnail/>
+                            ) : (
+                                <p>이미지 로딩 중...</p>
+                                )}
                         </Col>
                     </Row>
                 </Form.Group>
@@ -156,19 +176,15 @@ function GetProduct() {
                         <Col sm="6" className="text-end">
                             <Form.Control
                                 name="purchaseQty"
-                                type="text"
+                                type="number"
                                 defaultValue="1"
+                                min="1"        // 최소값
+                                max="50"      // 최대값
+                                step="1"       // 증감 단계
                                 onChange={handleChange}
-                                // isInvalid={!isPurchaseQtyValid}
                             />
                         </Col>
                     </Row>
-                    {/*<Form.Control.Feedback>*/}
-                    {/*    입력 완료*/}
-                    {/*</Form.Control.Feedback>*/}
-                    {/*<Form.Control.Feedback type="invalid" >*/}
-                    {/*    1 이상의 값을 입력해 주세요.*/}
-                    {/*</Form.Control.Feedback>*/}
                 </Form.Group>
                 <Form.Group className="text-end" >
                     <Button id="cancel" variant="secondary" as={Link} to="/product/getProductList">취소</Button>
